@@ -2,22 +2,19 @@
 
 from __future__ import annotations
 
+import importlib.util
 from pathlib import Path
 
 # SVG to PNG library detection
 # Prefer CairoSVG (better quality), fall back to svglib
+# We use importlib.util.find_spec to check availability without importing
+# to prevent reportlab from hanging on import due to Windows font scanning.
 PNG_RENDERER: str | None = None
 
-try:
-    import cairosvg
+if importlib.util.find_spec('cairosvg') is not None:
     PNG_RENDERER = 'cairosvg'
-except (ImportError, OSError):
-    try:
-        from svglib.svglib import svg2rlg
-        from reportlab.graphics import renderPM
-        PNG_RENDERER = 'svglib'
-    except (ImportError, OSError):
-        pass
+elif importlib.util.find_spec('svglib') is not None:
+    PNG_RENDERER = 'svglib'
 
 
 def get_png_renderer_info() -> tuple[str | None, str, str | None]:
@@ -58,6 +55,7 @@ def convert_svg_to_png(
 
     try:
         if PNG_RENDERER == 'cairosvg':
+            import cairosvg
             cairosvg.svg2png(
                 url=str(svg_path),
                 write_to=str(png_path),
@@ -67,6 +65,9 @@ def convert_svg_to_png(
             return True
 
         elif PNG_RENDERER == 'svglib':
+            from svglib.svglib import svg2rlg
+            from reportlab.graphics import renderPM
+            
             drawing = svg2rlg(str(svg_path))
             if drawing is None:
                 print(f"  Warning: Unable to parse SVG ({svg_path.name})")
@@ -84,3 +85,4 @@ def convert_svg_to_png(
         return False
 
     return False
+

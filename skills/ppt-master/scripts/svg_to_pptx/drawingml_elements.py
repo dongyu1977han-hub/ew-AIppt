@@ -58,6 +58,58 @@ def _wrap_shape(
 # rect
 # ---------------------------------------------------------------------------
 
+def _build_rect_txbody_xml(text_elem: ET.Element, ctx: ConvertContext) -> str:
+    """Build a <p:txBody> element for embedding directly inside a <rect> Shape."""
+    font_size = _f(_get_attr(text_elem, 'font-size', ctx), 16) * ctx.scale_y
+    font_weight = _get_attr(text_elem, 'font-weight', ctx) or '400'
+    font_family_str = _get_attr(text_elem, 'font-family', ctx) or ''
+    text_anchor = _get_attr(text_elem, 'text-anchor', ctx) or 'start'
+    fill_raw = _get_attr(text_elem, 'fill', ctx) or '#000000'
+    fill_color = parse_hex_color(fill_raw) or '000000'
+    opacity = get_fill_opacity(text_elem, ctx)
+    font_style = _get_attr(text_elem, 'font-style', ctx) or ''
+    text_decoration = _get_attr(text_elem, 'text-decoration', ctx) or ''
+
+    fonts = parse_font_family(font_family_str)
+
+    parent_attrs = {
+        'fill': fill_color,
+        'fill_raw': fill_raw,
+        'font_weight': font_weight,
+        'font_size': font_size,
+        'font_family': font_family_str,
+        'font_style': font_style,
+        'text_decoration': text_decoration,
+        'opacity': opacity,
+    }
+    runs = _build_text_runs(text_elem, parent_attrs)
+    if not runs:
+        return ''
+
+    algn_map = {'start': 'l', 'middle': 'ctr', 'end': 'r'}
+    algn = algn_map.get(text_anchor, 'l')
+
+    runs_xml = '\n'.join(_build_run_xml(r, fonts, ctx) for r in runs)
+
+    # 智能读取 align-anchor 自定义对齐属性 (t=顶部, ctr=绝对居中)
+    anchor = text_elem.get('align-anchor') or 'ctr'
+
+    # 对顶部居中 t 对齐适当留出内边距 (在DrawingML中单位是EMU)
+    t_ins = "144000" if anchor == "t" else "0"
+
+    txbody_xml = f'''<p:txBody>
+<a:bodyPr wrap="none" lIns="0" tIns="{t_ins}" rIns="0" bIns="0" anchor="{anchor}" anchorCtr="0">
+<a:spAutoFit/>
+</a:bodyPr>
+<a:lstStyle/>
+<a:p>
+<a:pPr algn="{algn}"/>
+{runs_xml}
+</a:p>
+</p:txBody>'''
+    return txbody_xml
+
+
 def convert_rect(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
     """Convert SVG <rect> to DrawingML shape."""
     x = ctx_x(_f(elem.get('x')), ctx)
@@ -87,6 +139,18 @@ def convert_rect(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
 
     geom = '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom>'
 
+    # 检测子元素中是否有名为 text 的子元素 (这允许我们在SVG生成阶段直接在Element层级将文字append进rect)
+    text_child = None
+    for child in elem:
+        child_tag = child.tag.replace(f'{{{SVG_NS}}}', '')
+        if child_tag == 'text':
+            text_child = child
+            break
+
+    extra_xml = ''
+    if text_child is not None:
+        extra_xml = _build_rect_txbody_xml(text_child, ctx)
+
     shape_id = ctx.next_id()
     off_x = px_to_emu(x)
     off_y = px_to_emu(y)
@@ -97,6 +161,7 @@ def convert_rect(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
             shape_id, f'Rectangle {shape_id}',
             off_x, off_y, ext_cx, ext_cy,
             geom, fill, stroke, effect, rot=rot,
+            extra_xml=extra_xml,
         ),
         bounds_emu=(off_x, off_y, off_x + ext_cx, off_y + ext_cy),
     )

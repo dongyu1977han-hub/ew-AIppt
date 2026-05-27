@@ -1,16 +1,16 @@
 {
   "meta": {
-    "total": 20,
+    "total": 21,
     "defaultViewBox": "0 0 1280 720",
     "formats": ["ppt169"],
-    "standardFiles": ["design_spec.md", "01_cover.svg", "02_toc.svg", "02_chapter.svg", "03_content.svg", "04_ending.svg"],
+    "standardFiles": ["design_spec.md", "01_cover.svg", "02_toc.svg", "03_content.svg", "03_content_with_subtitle.svg", "04_content_no_subtitle.svg", "04_ending.svg", "05_ending.svg"],
     "standardPageTypes": ["cover", "toc", "chapter", "content", "ending"],
-    "updated": "2026-04-10"
+    "updated": "2026-04-25"
   },
   "categories": {
     "brand": {
       "label": "Brand Style Templates",
-      "layouts": ["google_style", "mckinsey", "anthropic", "中汽研_常规", "中汽研_商务", "中汽研_现代", "中国电建_常规", "中国电建_现代", "招商银行"]
+      "layouts": ["google_style", "mckinsey", "anthropic", "中汽研_常规", "中汽研_商务", "中汽研_现代", "中国电建_常规", "中国电建_现代", "招商银行", "ew_template"]
     },
     "general": {
       "label": "General Style Templates",
@@ -32,8 +32,8 @@
   "quickLookup": {
     "strategy": ["exhibit", "mckinsey"],
     "board": ["exhibit", "mckinsey", "招商银行"],
-    "general_business": ["科技蓝商务", "smart_red", "exhibit"],
-    "technology": ["anthropic", "google_style", "smart_red", "ai_ops"],
+    "general_business": ["科技蓝商务", "smart_red", "exhibit", "ew_template"],
+    "technology": ["anthropic", "google_style", "smart_red", "ai_ops", "ew_template"],
     "government": ["government_red", "government_blue", "ai_ops"],
     "academic": ["academic_defense", "重庆大学"],
     "medical": ["medical_university"],
@@ -65,6 +65,33 @@
       "tone": "Tech-forward, professional, modern, conclusion-first",
       "themeMode": "Hybrid theme (dark cover/chapter + light content pages)",
       "keywords": ["AI", "LLM", "Developer", "Technology"]
+    },
+    "ew_template": {
+      "label": "亿汇智标准模版 (蓝灰 2026 V1.0)",
+      "summary": "亿汇智公司官方标准 PPT 模版，严格遵循蓝灰配色设计规范。适用于方案建议书、工作汇报、战略规划及客户提案。包含封面、目录、有副标题内容页、无副标题内容页、结尾页共5种板式。",
+      "tone": "央国企正式商务汇报风格：专业严谨、蓝灰主色、信息层次清晰",
+      "themeMode": "浅色主题 (白色主背景 #FFFFFF + 主色蓝 #4067A1 + 辅色浅蓝 #55A4DC + 强调红 #AF1E23)",
+      "pageTypes": {
+        "cover": "01_cover.svg — 封面：全屏背景图+深蓝叠加+左下角标题区",
+        "toc": "02_toc.svg — 目录页：左侧白色面板+右侧斜切蓝灰背景+表格式目录",
+        "content_with_subtitle": "03_content_with_subtitle.svg — 内容页（有副标题）：标题+渐变分隔线+副标题+引言+内容区",
+        "content_no_subtitle": "04_content_no_subtitle.svg — 内容页（无副标题）：标题+渐变分隔线+更大内容区",
+        "ending": "05_ending.svg — 结尾页：右侧蓝色斜切面板+感谢语+左侧关键词"
+      },
+      "placeholders": {
+        "cover": ["{{CLIENT}}", "{{TITLE}}", "{{SUBTITLE}}", "{{DATE}}"],
+        "toc": ["{{TOC_ITEM_N_NUM}}", "{{TOC_ITEM_N_TITLE}}"],
+        "content": ["{{PAGE_TITLE}}", "{{SUBTITLE}}", "{{LEAD_TEXT}}", "{{CONTENT_AREA}}", "{{REMARK}}", "{{PAGE_NUM}}"],
+        "ending": ["{{CLOSING_TITLE_LINE1}}", "{{CLOSING_TITLE_LINE2}}", "{{CLOSING_BODY}}", "{{KEYWORD_1}}", "{{KEYWORD_2}}", "{{KEYWORD_3}}"]
+      },
+      "colors": {
+        "primary": "#4067A1",
+        "accent1": "#55A4DC",
+        "accent2": "#AF1E23",
+        "footer": "#428AC8",
+        "bg": "#FFFFFF"
+      },
+      "keywords": ["亿汇智", "EW", "央国企", "商务汇报", "方案建议书", "蓝灰"]
     },
     "exhibit": {
       "label": "Exhibit Style Template",
