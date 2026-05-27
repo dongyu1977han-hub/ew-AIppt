@@ -423,6 +423,9 @@ SVG_CONSTRAINTS = {
     ]
 }
 
+# Pre-lowercased set for O(1) forbidden element lookup
+_FORBIDDEN_ELEMENTS_LOWER: set[str] = {e.lower() for e in SVG_CONSTRAINTS['forbidden_elements']}
+
 
 # ============================================================
 # Configuration Manager Class
@@ -530,7 +533,7 @@ class Config:
         Returns:
             Whether the element is allowed
         """
-        return element_name.lower() not in [e.lower() for e in SVG_CONSTRAINTS['forbidden_elements']]
+        return element_name.lower() not in _FORBIDDEN_ELEMENTS_LOWER
 
     @staticmethod
     def get_project_path(subdir: str = '') -> Path:

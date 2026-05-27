@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import re
+from copy import deepcopy
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
 from .drawingml_context import ConvertContext, ShapeResult
 from .drawingml_utils import (
-    SVG_NS,
-    _extract_inheritable_styles, resolve_url_id,
+    SVG_NS, XLINK_NS,
+    _extract_inheritable_styles, resolve_url_id, _f,
 )
 from .drawingml_styles import build_effect_xml
 from .drawingml_elements import (
@@ -24,9 +25,13 @@ from .drawingml_elements import (
 # Transform & layout helpers
 # ---------------------------------------------------------------------------
 
+import math as _math
+
+
 def parse_transform(transform_str: str) -> tuple[float, float, float, float, float]:
     """Parse SVG transform string, extract translate, scale, and rotate.
 
+    Supports: translate(), scale(), rotate(), matrix().
     Returns:
         (dx, dy, sx, sy, angle_deg) tuple.
     """
@@ -37,17 +42,27 @@ def parse_transform(transform_str: str) -> tuple[float, float, float, float, flo
     sx, sy = 1.0, 1.0
     angle_deg = 0.0
 
-    m = re.search(r'translate\(\s*([-\d.]+)[\s,]+([-\d.]+)\s*\)', transform_str)
+    # matrix(a, b, c, d, e, f) — most general, check first
+    m = re.search(r'matrix\(\s*([-\d.eE+]+)[\s,]+([-\d.eE+]+)[\s,]+([-\d.eE+]+)[\s,]+([-\d.eE+]+)[\s,]+([-\d.eE+]+)[\s,]+([-\d.eE+]+)\s*\)', transform_str)
+    if m:
+        a, b, c, d = float(m.group(1)), float(m.group(2)), float(m.group(3)), float(m.group(4))
+        dx, dy = float(m.group(5)), float(m.group(6))
+        sx = _math.sqrt(a * a + b * b) if (a * a + b * b) > 1e-10 else 1.0
+        sy = _math.sqrt(c * c + d * d) if (c * c + d * d) > 1e-10 else 1.0
+        angle_deg = _math.degrees(_math.atan2(b, a))
+        return dx, dy, sx, sy, angle_deg
+
+    m = re.search(r'translate\(\s*([-\d.eE+]+)[\s,]+([-\d.eE+]+)\s*\)', transform_str)
     if m:
         dx = float(m.group(1))
         dy = float(m.group(2))
 
-    m = re.search(r'scale\(\s*([-\d.]+)(?:[\s,]+([-\d.]+))?\s*\)', transform_str)
+    m = re.search(r'scale\(\s*([-\d.eE+]+)(?:[\s,]+([-\d.eE+]+))?\s*\)', transform_str)
     if m:
         sx = float(m.group(1))
         sy = float(m.group(2)) if m.group(2) else sx
 
-    m = re.search(r'rotate\(\s*([-\d.]+)', transform_str)
+    m = re.search(r'rotate\(\s*([-\d.eE+]+)', transform_str)
     if m:
         angle_deg = float(m.group(1))
 
@@ -85,8 +100,8 @@ def convert_g(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
     if not child_results:
         return None
 
-    # Single child: flatten
-    if len(child_results) == 1:
+    # Single child: flatten only if the group has no effects/styles
+    if len(child_results) == 1 and not filter_id and not style_overrides:
         return child_results[0]
 
     # Multiple children: wrap in <p:grpSp>
@@ -140,6 +155,43 @@ def convert_g(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
 
 
 # ---------------------------------------------------------------------------
+# <use> element handling
+# ---------------------------------------------------------------------------
+
+def convert_use(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
+    """Convert SVG <use> by resolving the referenced element and converting it.
+
+    Looks up href/xlink:href in ctx.defs, clones the element with x/y offset,
+    and delegates to the appropriate converter.
+    """
+    href = elem.get('href') or elem.get(f'{{{XLINK_NS}}}href') or ''
+    ref_id = href.lstrip('#')
+    if not ref_id or ref_id not in ctx.defs:
+        return None
+
+    # Clone the referenced element
+    ref_elem = ctx.defs[ref_id]
+    clone = deepcopy(ref_elem)
+
+    # Apply use element's x/y as translate offset
+    use_x = _f(elem.get('x'))
+    use_y = _f(elem.get('y'))
+    if use_x or use_y:
+        existing_transform = clone.get('transform', '')
+        clone.set('transform', f'translate({use_x}, {use_y}) {existing_transform}'.strip())
+
+    # Apply use element's dimensions (width/height) if the referenced element supports them
+    use_w = elem.get('width')
+    use_h = elem.get('height')
+    if use_w and clone.tag.endswith('}') and 'image' in clone.tag:
+        clone.set('width', use_w)
+    if use_h and clone.tag.endswith('}') and 'image' in clone.tag:
+        clone.set('height', use_h)
+
+    return convert_element(clone, ctx)
+
+
+# ---------------------------------------------------------------------------
 # Defs collection & element dispatch
 # ---------------------------------------------------------------------------
 
@@ -156,23 +208,27 @@ _CONVERTERS = {
     'text': convert_text,
     'image': convert_image,
     'g': convert_g,
+    'use': convert_use,
 }
 
 
 def collect_defs(root: ET.Element) -> dict[str, ET.Element]:
     """Collect all <defs> children into an {id: element} dictionary."""
     defs: dict[str, ET.Element] = {}
+    seen_ids: set[str] = set()
     for defs_elem in root.iter(f'{{{SVG_NS}}}defs'):
         for child in defs_elem:
             elem_id = child.get('id')
-            if elem_id:
+            if elem_id and elem_id not in seen_ids:
                 defs[elem_id] = child
-    # Also check for defs without namespace
+                seen_ids.add(elem_id)
+    # Also check for defs without namespace (avoid duplicates via seen_ids)
     for defs_elem in root.iter('defs'):
         for child in defs_elem:
             elem_id = child.get('id')
-            if elem_id:
+            if elem_id and elem_id not in seen_ids:
                 defs[elem_id] = child
+                seen_ids.add(elem_id)
     return defs
 
 

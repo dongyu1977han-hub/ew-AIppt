@@ -14,7 +14,7 @@ from .drawingml_utils import (
     px_to_emu, _f, _get_attr,
     ctx_x, ctx_y, ctx_w, ctx_h,
     parse_hex_color, resolve_url_id, get_effective_filter_id,
-    parse_font_family, is_cjk_char, estimate_text_width,
+    parse_font_family, estimate_text_width,
     _xml_escape,
 )
 from .drawingml_styles import (
@@ -130,12 +130,7 @@ def convert_rect(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
     if filt_id and filt_id in ctx.defs:
         effect = build_effect_xml(ctx.defs[filt_id])
 
-    rot = 0
-    transform = elem.get('transform')
-    if transform:
-        r_match = re.search(r'rotate\(\s*([-\d.]+)', transform)
-        if r_match:
-            rot = int(float(r_match.group(1)) * ANGLE_UNIT)
+    rot = _parse_rotation(elem)
 
     geom = '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom>'
 
@@ -292,7 +287,7 @@ def convert_circle(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
 
         rotate_deg = 0.0
         transform = elem.get('transform', '')
-        r_match = re.search(r'rotate\(\s*([-\d.]+)', transform)
+        r_match = _ROTATE_RE.search(transform)
         if r_match:
             rotate_deg = float(r_match.group(1))
 
@@ -395,12 +390,7 @@ def convert_line(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
     stroke_op = get_stroke_opacity(elem, ctx)
     stroke = build_stroke_xml(elem, ctx, stroke_op)
 
-    rot = 0
-    transform = elem.get('transform')
-    if transform:
-        r_match = re.search(r'rotate\(\s*([-\d.]+)', transform)
-        if r_match:
-            rot = int(float(r_match.group(1)) * ANGLE_UNIT)
+    rot = _parse_rotation(elem)
 
     shape_id = ctx.next_id()
     off_x = px_to_emu(min_x)
@@ -522,7 +512,7 @@ def convert_path(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
         if t_match:
             tx = float(t_match.group(1))
             ty = float(t_match.group(2))
-        r_match = re.search(r'rotate\(\s*([-\d.]+)', transform)
+        r_match = _ROTATE_RE.search(transform)
         if r_match:
             rot = int(float(r_match.group(1)) * ANGLE_UNIT)
 
@@ -577,11 +567,30 @@ def _parse_points(points_str: str) -> list[tuple[float, float]]:
     nums = re.findall(r'[-+]?(?:\d+\.?\d*|\.\d+)', points_str)
     if len(nums) < 4:
         return []
-    return [(float(nums[i]), float(nums[i + 1])) for i in range(0, len(nums) - 1, 2)]
+    # Warn if odd number of coordinates (malformed SVG)
+    if len(nums) % 2 != 0:
+        nums = nums[:-1]
+    return [(float(nums[i]), float(nums[i + 1])) for i in range(0, len(nums), 2)]
 
 
-def convert_polygon(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
-    """Convert SVG <polygon> to DrawingML custom geometry shape."""
+_ROTATE_RE = re.compile(r'rotate\(\s*([-\d.]+)')
+
+
+def _parse_rotation(elem: ET.Element) -> int:
+    """Extract rotation angle from element's transform attribute (in EMU units)."""
+    transform = elem.get('transform')
+    if transform:
+        m = _ROTATE_RE.search(transform)
+        if m:
+            return int(float(m.group(1)) * ANGLE_UNIT)
+    return 0
+
+
+def _convert_poly_shape(
+    elem: ET.Element, ctx: ConvertContext,
+    close_path: bool, use_fill: bool, shape_label: str,
+) -> ShapeResult | None:
+    """Shared converter for <polygon> and <polyline>."""
     points = _parse_points(elem.get('points', ''))
     if not points:
         return None
@@ -589,7 +598,8 @@ def convert_polygon(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None
     commands = [PathCommand('M', [points[0][0], points[0][1]])]
     for px_, py_ in points[1:]:
         commands.append(PathCommand('L', [px_, py_]))
-    commands.append(PathCommand('Z', []))
+    if close_path:
+        commands.append(PathCommand('Z', []))
 
     path_xml, min_x, min_y, width, height = path_commands_to_drawingml(
         commands, ctx.translate_x, ctx.translate_y,
@@ -610,24 +620,22 @@ def convert_polygon(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None
 </a:path></a:pathLst>
 </a:custGeom>'''
 
-    fill_op = get_fill_opacity(elem, ctx)
-    stroke_op = get_stroke_opacity(elem, ctx)
-    fill = build_fill_xml(elem, ctx, fill_op)
-    stroke = build_stroke_xml(elem, ctx, stroke_op)
+    if use_fill:
+        fill_op = get_fill_opacity(elem, ctx)
+        fill = build_fill_xml(elem, ctx, fill_op)
+    else:
+        fill = '<a:noFill/>'
 
-    rot = 0
-    transform = elem.get('transform')
-    if transform:
-        r_match = re.search(r'rotate\(\s*([-\d.]+)', transform)
-        if r_match:
-            rot = int(float(r_match.group(1)) * ANGLE_UNIT)
+    stroke_op = get_stroke_opacity(elem, ctx)
+    stroke = build_stroke_xml(elem, ctx, stroke_op)
+    rot = _parse_rotation(elem)
 
     shape_id = ctx.next_id()
     off_x = px_to_emu(min_x)
     off_y = px_to_emu(min_y)
     return ShapeResult(
         xml=_wrap_shape(
-            shape_id, f'Polygon {shape_id}',
+            shape_id, f'{shape_label} {shape_id}',
             off_x, off_y, w_emu, h_emu,
             geom, fill, stroke, rot=rot,
         ),
@@ -635,58 +643,14 @@ def convert_polygon(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None
     )
 
 
+def convert_polygon(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
+    """Convert SVG <polygon> to DrawingML custom geometry shape."""
+    return _convert_poly_shape(elem, ctx, close_path=True, use_fill=True, shape_label='Polygon')
+
+
 def convert_polyline(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
     """Convert SVG <polyline> to DrawingML custom geometry shape."""
-    points = _parse_points(elem.get('points', ''))
-    if not points:
-        return None
-
-    commands = [PathCommand('M', [points[0][0], points[0][1]])]
-    for px_, py_ in points[1:]:
-        commands.append(PathCommand('L', [px_, py_]))
-
-    path_xml, min_x, min_y, width, height = path_commands_to_drawingml(
-        commands, ctx.translate_x, ctx.translate_y,
-        ctx.scale_x, ctx.scale_y,
-    )
-
-    if not path_xml:
-        return None
-
-    w_emu = px_to_emu(width)
-    h_emu = px_to_emu(height)
-
-    geom = f'''<a:custGeom>
-<a:avLst/><a:gdLst/><a:ahLst/><a:cxnLst/>
-<a:rect l="l" t="t" r="r" b="b"/>
-<a:pathLst><a:path w="{w_emu}" h="{h_emu}">
-{path_xml}
-</a:path></a:pathLst>
-</a:custGeom>'''
-
-    fill_op = get_fill_opacity(elem, ctx)
-    stroke_op = get_stroke_opacity(elem, ctx)
-    fill = build_fill_xml(elem, ctx, fill_op)
-    stroke = build_stroke_xml(elem, ctx, stroke_op)
-
-    rot = 0
-    transform = elem.get('transform')
-    if transform:
-        r_match = re.search(r'rotate\(\s*([-\d.]+)', transform)
-        if r_match:
-            rot = int(float(r_match.group(1)) * ANGLE_UNIT)
-
-    shape_id = ctx.next_id()
-    off_x = px_to_emu(min_x)
-    off_y = px_to_emu(min_y)
-    return ShapeResult(
-        xml=_wrap_shape(
-            shape_id, f'Polyline {shape_id}',
-            off_x, off_y, w_emu, h_emu,
-            geom, '<a:noFill/>', stroke, rot=rot,
-        ),
-        bounds_emu=(off_x, off_y, off_x + w_emu, off_y + h_emu),
-    )
+    return _convert_poly_shape(elem, ctx, close_path=False, use_fill=False, shape_label='Polyline')
 
 
 # ---------------------------------------------------------------------------
@@ -858,12 +822,7 @@ def convert_text(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
             pass
 
     # Text rotation
-    text_rot = 0
-    text_transform = elem.get('transform', '')
-    if text_transform:
-        rot_match = re.search(r'rotate\(\s*([-\d.]+)', text_transform)
-        if rot_match:
-            text_rot = int(float(rot_match.group(1)) * ANGLE_UNIT)
+    text_rot = _parse_rotation(elem)
 
     # Alignment
     algn_map = {'start': 'l', 'middle': 'ctr', 'end': 'r'}
@@ -903,7 +862,7 @@ def convert_text(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
 </a:bodyPr>
 <a:lstStyle/>
 <a:p>
-<a:pPr algn="{algn}"/>
+<a:pPr algn="{algn}"{spc_attr}/>
 {runs_xml}
 </a:p>
 </p:txBody>
@@ -1107,6 +1066,8 @@ def convert_image(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
         return None
 
     # Extract image data
+    _PPTX_SUPPORTED_FORMATS = {'png', 'jpg', 'gif', 'wmf', 'emf', 'bmp', 'tif', 'tiff'}
+
     if href.startswith('data:'):
         match = re.match(r'data:image/(\w+);base64,(.+)', href, re.DOTALL)
         if not match:
@@ -1114,6 +1075,9 @@ def convert_image(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
         img_format = match.group(1).lower()
         if img_format == 'jpeg':
             img_format = 'jpg'
+        if img_format not in _PPTX_SUPPORTED_FORMATS:
+            print(f'  Warning: Unsupported image format "{img_format}" (supported: {", ".join(sorted(_PPTX_SUPPORTED_FORMATS))})')
+            return None
         img_data = base64.b64decode(match.group(2))
     else:
         if ctx.svg_dir is None:
@@ -1127,6 +1091,9 @@ def convert_image(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
         img_format = img_path.suffix.lstrip('.').lower()
         if img_format == 'jpeg':
             img_format = 'jpg'
+        if img_format not in _PPTX_SUPPORTED_FORMATS:
+            print(f'  Warning: Unsupported image format "{img_format}" for {href}')
+            return None
         img_data = img_path.read_bytes()
 
     img_idx = len(ctx.media_files) + 1
@@ -1140,12 +1107,7 @@ def convert_image(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
         'target': f'../media/{img_filename}',
     })
 
-    rot = 0
-    transform = elem.get('transform')
-    if transform:
-        r_match = re.search(r'rotate\(\s*([-\d.]+)', transform)
-        if r_match:
-            rot = int(float(r_match.group(1)) * ANGLE_UNIT)
+    rot = _parse_rotation(elem)
     rot_attr = f' rot="{rot}"' if rot else ''
 
     # Resolve clip-path → DrawingML geometry
@@ -1201,12 +1163,7 @@ def convert_ellipse(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None
 
     geom = '<a:prstGeom prst="ellipse"><a:avLst/></a:prstGeom>'
 
-    rot = 0
-    transform = elem.get('transform')
-    if transform:
-        r_match = re.search(r'rotate\(\s*([-\d.]+)', transform)
-        if r_match:
-            rot = int(float(r_match.group(1)) * ANGLE_UNIT)
+    rot = _parse_rotation(elem)
 
     shape_id = ctx.next_id()
     off_x = px_to_emu(x)

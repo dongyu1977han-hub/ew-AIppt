@@ -302,7 +302,8 @@ class ProjectManager:
         canonical = content.replace("\r\n", "\n")
         canonical = re.sub(r"(?m)^(\s*Crawled:\s+).*$", r"\1__IGNORED__", canonical)
         canonical = re.sub(r"(?m)^(\s*Imported:\s+).*$", r"\1__IGNORED__", canonical)
-        canonical = re.sub(r"([^\s\]()/]+_files)/", "__ASSET_DIR__/", canonical)
+        # Only match relative asset dirs (e.g. "foo_files/"), not URLs like "https://example.com/foo_files/"
+        canonical = re.sub(r"(?<![:/])(?<!://)(\b\w+_files)/", "__ASSET_DIR__/", canonical)
         return canonical.strip()
 
     def _find_equivalent_markdown(self, source_path: Path, sources_dir: Path) -> Path | None:

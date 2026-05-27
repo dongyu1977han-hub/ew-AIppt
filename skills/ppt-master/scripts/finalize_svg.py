@@ -179,7 +179,9 @@ def finalize_project(
         if not quiet:
             if crop_count > 0:
                 safe_print(f"      {crop_count} image(s) cropped")
-            else:
+            if crop_errors > 0:
+                safe_print(f"      Warning: {crop_errors} image(s) failed to crop")
+            if crop_count == 0 and crop_errors == 0:
                 safe_print("      No cropping needed (no images with slice attribute)")
 
     # Step 4: Fix image aspect ratio (prevent stretching during PPT shape conversion)

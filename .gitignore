@@ -85,6 +85,19 @@ tramp
 /scratch/
 .notes/
 
+# Root-level scratch/debug scripts and generated data files
+/check_colors.py
+/convert_docx.py
+/debug_*.py
+/extract_*.py
+/inspect_*.py
+/quick_*.py
+/read_data.py
+/render_svg.py
+/render_svg_mgmt.py
+/scratch_*.py
+/*.txt
+
 # Test files
 test_output/
 temp_files/
