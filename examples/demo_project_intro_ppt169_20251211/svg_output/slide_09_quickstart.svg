@@ -48,7 +48,7 @@
 
     <rect x="20" y="120" width="310" height="48" rx="8" fill="#1F2937"/>
     <text x="30" y="142" font-family="monospace, Arial" font-size="11" fill="#10B981">git clone</text>
-    <text x="30" y="158" font-family="monospace, Arial" font-size="9" fill="#F59E0B">https://github.com/hugohe3/ppt-master</text>
+    <text x="30" y="158" font-family="monospace, Arial" font-size="9" fill="#F59E0B">https://github.com/dongyu1977han-hub/ew-AIppt</text>
 
     <text x="175" y="195" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#6B7280">或在编辑器中直接 Clone</text>
 
@@ -137,5 +137,5 @@
   <rect x="60" y="660" width="1160" height="1" fill="#E5E7EB"/>
   <text x="60" y="690" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#9CA3AF">PPT Master - 快速开始</text>
   <text x="640" y="690" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#9CA3AF">09 / 10</text>
-  <text x="1220" y="690" font-family="Arial, sans-serif" font-size="12" text-anchor="end" fill="#9CA3AF">github.com/hugohe3/ppt-master</text>
+  <text x="1220" y="690" font-family="Arial, sans-serif" font-size="12" text-anchor="end" fill="#9CA3AF">github.com/dongyu1977han-hub/ew-AIppt</text>
 </svg>

@@ -1,21 +1,21 @@
 # PPT Master — AI generates natively editable PPTX from any document
 
-[![Version](https://img.shields.io/badge/version-v2.3.0-blue.svg)](https://github.com/hugohe3/ppt-master/releases)
+[![Version](https://img.shields.io/badge/version-v2.3.0-blue.svg)](https://github.com/dongyu1977han-hub/ew-AIppt/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub stars](https://img.shields.io/github/stars/hugohe3/ppt-master.svg)](https://github.com/hugohe3/ppt-master/stargazers)
-[![AtomGit stars](https://atomgit.com/hugohe3/ppt-master/star/badge.svg)](https://atomgit.com/hugohe3/ppt-master)
+[![GitHub stars](https://img.shields.io/github/stars/dongyu1977han-hub/ew-AIppt.svg)](https://github.com/dongyu1977han-hub/ew-AIppt/stargazers)
+[![AtomGit stars](https://atomgit.com/dongyu1977han-hub/ew-AIppt/star/badge.svg)](https://atomgit.com/dongyu1977han-hub/ew-AIppt)
 
 English | [中文](./README_CN.md)
 
 <p align="center">
-  <a href="https://hugohe3.github.io/ppt-master/"><strong>Live Demo</strong></a> ·
+  <a href="https://dongyu1977han-hub.github.io/ew-AIppt/"><strong>Live Demo</strong></a> ·
   <a href="https://www.hehugo.com/"><strong>About Hugo He</strong></a> ·
   <a href="./examples/"><strong>Examples</strong></a> ·
   <a href="./docs/faq.md"><strong>FAQ</strong></a> ·
   <a href="mailto:heyug3@gmail.com"><strong>Contact</strong></a>
 </p>
 
-> **Official channels —** this project is published **only** on [GitHub](https://github.com/hugohe3/ppt-master) (primary) and [AtomGit](https://atomgit.com/hugohe3/ppt-master) (auto-synced mirror). Redistributions on any other platform are unofficial and not maintained by the author. Licensed under MIT — attribution required.
+> **Official channels —** this project is published **only** on [GitHub](https://github.com/dongyu1977han-hub/ew-AIppt) (primary) and [AtomGit](https://atomgit.com/dongyu1977han-hub/ew-AIppt) (auto-synced mirror). Redistributions on any other platform are unofficial and not maintained by the author. Licensed under MIT — attribution required.
 
 ---
 
@@ -32,7 +32,7 @@ PPT Master is different:
 - **Data stays local** — your files shouldn't have to be uploaded to someone else's server just to make a presentation. Apart from AI model communication, the entire pipeline runs on your machine
 - **No platform lock-in** — your workflow shouldn't be held hostage by any single company. Works with Claude Code, Cursor, VS Code Copilot, and more; supports Claude, GPT, Gemini, Kimi, and other models
 
-**[See live examples →](https://hugohe3.github.io/ppt-master/)** · [`examples/`](./examples/) — 15 projects, 229 pages
+**[See live examples →](https://dongyu1977han-hub.github.io/ew-AIppt/)** · [`examples/`](./examples/) — 15 projects, 229 pages
 
 ## Gallery
 
@@ -132,13 +132,13 @@ sudo apt install pandoc
 
 ### 3. Set Up
 
-**Option A — Download ZIP** (no Git required): click **Code → Download ZIP** on the [GitHub page](https://github.com/hugohe3/ppt-master), then unzip.
+**Option A — Download ZIP** (no Git required): click **Code → Download ZIP** on the [GitHub page](https://github.com/dongyu1977han-hub/ew-AIppt), then unzip.
 
 **Option B — Git clone** (requires [Git](https://git-scm.com/downloads) installed):
 
 ```bash
-git clone https://github.com/hugohe3/ppt-master.git
-cd ppt-master
+git clone https://github.com/dongyu1977han-hub/ew-AIppt.git
+cd ew-AIppt
 ```
 
 Then install dependencies:
@@ -232,8 +232,8 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to get involved.
 
 Looking to collaborate, integrate PPT Master into your workflow, or just have questions?
 
-- 💬 **Questions & sharing** — [GitHub Discussions](https://github.com/hugohe3/ppt-master/discussions)
-- 🐛 **Bug reports & feature requests** — [GitHub Issues](https://github.com/hugohe3/ppt-master/issues)
+- 💬 **Questions & sharing** — [GitHub Discussions](https://github.com/dongyu1977han-hub/ew-AIppt/discussions)
+- 🐛 **Bug reports & feature requests** — [GitHub Issues](https://github.com/dongyu1977han-hub/ew-AIppt/issues)
 - 📧 **Business & consulting inquiries** — [heyug3@gmail.com](mailto:heyug3@gmail.com)
 - 🌐 **Learn more about the author** — [www.hehugo.com](https://www.hehugo.com/)
 
@@ -243,11 +243,11 @@ Looking to collaborate, integrate PPT Master into your workflow, or just have qu
 
 If this project helps you, please give it a ⭐!
 
-<a href="https://star-history.com/#hugohe3/ppt-master&Date">
+<a href="https://star-history.com/#dongyu1977han-hub/ew-AIppt&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=hugohe3/ppt-master&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=hugohe3/ppt-master&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=hugohe3/ppt-master&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=dongyu1977han-hub/ew-AIppt&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=dongyu1977han-hub/ew-AIppt&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=dongyu1977han-hub/ew-AIppt&type=Date" />
  </picture>
 </a>
 

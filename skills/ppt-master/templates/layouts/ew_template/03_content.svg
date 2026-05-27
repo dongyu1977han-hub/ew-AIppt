@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="footerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4067A1;stop-opacity:1"/>
+      <stop offset="60%" style="stop-color:#428AC8;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#808080;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="sepGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4067A1;stop-opacity:1"/>
+      <stop offset="45%" style="stop-color:#55A4DC;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#D3D3D3;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+  <!-- Alias: same as 03_content_with_subtitle.svg for backward compatibility -->
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <text x="64" y="52" font-family="'Microsoft YaHei', Arial, sans-serif" font-size="37" font-weight="bold" fill="#4067A1">{{PAGE_TITLE}}</text>
+  <image xlink:href="assets/inline_46d3b2d7f02f.png" x="1050" y="15" width="180" height="45" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="64" y="68" width="1152" height="3" fill="url(#sepGrad)"/>
+  <text x="64" y="108" font-family="'Microsoft YaHei', Arial, sans-serif" font-size="21" font-weight="bold" fill="#4067A1">{{SUBTITLE}}</text>
+  <text x="102" y="148" font-family="'Microsoft YaHei', Arial, sans-serif" font-size="19" font-weight="300" fill="#0D0D0D">{{LEAD_TEXT}}</text>
+  <rect x="64" y="172" width="1152" height="500" fill="none" stroke="#E0E6ED" stroke-dasharray="10,5" stroke-width="1.5"/>
+  <text x="640" y="425" text-anchor="middle" font-family="'Microsoft YaHei', Arial, sans-serif" font-size="22" fill="#D3D3D3" opacity="0.6">{{CONTENT_AREA}}</text>
+  <text x="64" y="692" font-family="'Microsoft YaHei', Arial, sans-serif" font-size="11" fill="#666666">{{REMARK}}</text>
+  <rect x="0" y="706" width="1280" height="14" fill="url(#footerGrad)"/>
+  <text x="1246" y="717" text-anchor="end" font-family="'Microsoft YaHei', Arial, sans-serif" font-size="11" fill="#FFFFFF">{{PAGE_NUM}}</text>
+</svg>

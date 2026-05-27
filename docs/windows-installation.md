@@ -30,15 +30,15 @@ Python is the only hard requirement.
 
 **Option A — Download ZIP** (easiest):
 
-1. Go to [github.com/hugohe3/ppt-master](https://github.com/hugohe3/ppt-master)
+1. Go to [github.com/dongyu1977han-hub/ew-AIppt](https://github.com/dongyu1977han-hub/ew-AIppt)
 2. Click the green **Code** button → **Download ZIP**
 3. Unzip to `C:\Users\YourName\ppt-master`
 
 **Option B — Git Clone** (requires [Git](https://git-scm.com/downloads)):
 
 ```powershell
-git clone https://github.com/hugohe3/ppt-master.git
-cd ppt-master
+git clone https://github.com/dongyu1977han-hub/ew-AIppt.git
+cd ew-AIppt
 ```
 
 ---
@@ -147,5 +147,5 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ## Still stuck?
 
 - 📖 [FAQ](./faq.md)
-- 🐛 [GitHub Issues](https://github.com/hugohe3/ppt-master/issues) — include your Python version, Windows version, and full error message
-- 💬 [GitHub Discussions](https://github.com/hugohe3/ppt-master/discussions)
+- 🐛 [GitHub Issues](https://github.com/dongyu1977han-hub/ew-AIppt/issues) — include your Python version, Windows version, and full error message
+- 💬 [GitHub Discussions](https://github.com/dongyu1977han-hub/ew-AIppt/discussions)

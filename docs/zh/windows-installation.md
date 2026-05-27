@@ -30,7 +30,7 @@ Python 是唯一的硬性要求。
 
 **方式 A — 下载 ZIP**（最简单）：
 
-1. 打开 [GitHub](https://github.com/hugohe3/ppt-master)（或 [AtomGit 镜像](https://atomgit.com/hugohe3/ppt-master)，国内更快）
+1. 打开 [GitHub](https://github.com/dongyu1977han-hub/ew-AIppt)（或 [AtomGit 镜像](https://atomgit.com/dongyu1977han-hub/ew-AIppt)，国内更快）
 2. 点击绿色 **Code** 按钮 → **Download ZIP**
 3. 解压到 `C:\Users\你的用户名\ppt-master`
 
@@ -38,10 +38,10 @@ Python 是唯一的硬性要求。
 
 ```powershell
 # GitHub
-git clone https://github.com/hugohe3/ppt-master.git
+git clone https://github.com/dongyu1977han-hub/ew-AIppt.git
 # AtomGit（国内更快）
-git clone https://atomgit.com/hugohe3/ppt-master.git
-cd ppt-master
+git clone https://atomgit.com/dongyu1977han-hub/ew-AIppt.git
+cd ew-AIppt
 ```
 
 ---
@@ -154,5 +154,5 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ## 还是搞不定？
 
 - 📖 [常见问题 (FAQ)](./faq.md)
-- 🐛 [GitHub Issues](https://github.com/hugohe3/ppt-master/issues) — 附上 Python 版本、Windows 版本和完整报错
-- 💬 [GitHub Discussions](https://github.com/hugohe3/ppt-master/discussions)
+- 🐛 [GitHub Issues](https://github.com/dongyu1977han-hub/ew-AIppt/issues) — 附上 Python 版本、Windows 版本和完整报错
+- 💬 [GitHub Discussions](https://github.com/dongyu1977han-hub/ew-AIppt/discussions)

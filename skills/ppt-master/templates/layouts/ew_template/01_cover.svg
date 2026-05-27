@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <!-- Gradient overlay for cover image -->
+    <linearGradient id="coverOverlay" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A2E50;stop-opacity:0.75"/>
+      <stop offset="100%" style="stop-color:#0D1A36;stop-opacity:0.90"/>
+    </linearGradient>
+    <!-- Footer gradient -->
+    <linearGradient id="footerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4067A1;stop-opacity:1"/>
+      <stop offset="60%" style="stop-color:#428AC8;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#808080;stop-opacity:1"/>
+    </linearGradient>
+    <!-- Title separator gradient -->
+    <linearGradient id="titleSepGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4067A1;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#55A4DC;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#D3D3D3;stop-opacity:1"/>
+    </linearGradient>
+    <clipPath id="coverClip">
+      <rect width="1280" height="720"/>
+    </clipPath>
+  </defs>
+
+  <!-- White page background -->
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+
+  <!-- Cover background image area (full bleed) -->
+  <image xlink:href="assets/inline_d45167864f9a.jpg" x="0" y="0" width="1280" height="720"
+         preserveAspectRatio="xMidYMid slice" clip-path="url(#coverClip)"/>
+
+  <!-- Dark blue overlay for text readability -->
+  <rect width="1280" height="720" fill="url(#coverOverlay)"/>
+
+  <!-- Left accent stripe (stronger brand anchor) -->
+  <rect x="0" y="0" width="8" height="720" fill="#55A4DC"/>
+
+  <!-- Title block - bottom left, structured layout -->
+  <!-- Separator line above title -->
+  <rect x="64" y="380" width="480" height="3" fill="url(#titleSepGrad)"/>
+
+  <!-- Main Title -->
+  <text x="64" y="448" font-family="'Microsoft YaHei', Arial, sans-serif"
+        font-size="48" font-weight="bold" fill="#FFFFFF">{{CLIENT}}</text>
+  <text x="64" y="510" font-family="'Microsoft YaHei', Arial, sans-serif"
+        font-size="48" font-weight="bold" fill="#FFFFFF">{{TITLE}}</text>
+
+  <!-- Subtitle -->
+  <text x="64" y="562" font-family="'Microsoft YaHei', Arial, sans-serif"
+        font-size="28" font-weight="normal" fill="#8EB4E3">{{SUBTITLE}}</text>
+
+  <!-- Company & Date info -->
+  <text x="64" y="618" font-family="'Microsoft YaHei', Arial, sans-serif"
+        font-size="18" fill="#D3D3D3">亿汇智科技（北京）有限公司</text>
+  <text x="64" y="648" font-family="'Microsoft YaHei', Arial, sans-serif"
+        font-size="18" fill="#D3D3D3">{{DATE}}</text>
+
+  <!-- Company logo placeholder (top-right) -->
+  <image xlink:href="assets/image7.svg" x="1100" y="28" width="148" height="48"
+         preserveAspectRatio="xMidYMid meet"/>
+
+  <!-- Footer color bar -->
+  <rect x="0" y="706" width="1280" height="14" fill="url(#footerGrad)"/>
+</svg>

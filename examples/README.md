@@ -2,7 +2,7 @@
 
 > This directory contains **15 curated example projects** covering consulting style, general-purpose style, creative style, and other design paradigms, totaling **229 SVG presentation pages**.
 
-**[Preview all example projects online](https://hugohe3.github.io/ppt-master/)**
+**[Preview all example projects online](https://dongyu1977han-hub.github.io/ew-AIppt/)**
 
 ## Overview
 

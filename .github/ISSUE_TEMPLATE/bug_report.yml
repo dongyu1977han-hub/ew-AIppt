@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for reporting! Please check the [FAQ](https://github.com/hugohe3/ppt-master/blob/main/docs/faq.md) first — your issue may already have a known solution.
+        Thanks for reporting! Please check the [FAQ](https://github.com/dongyu1977han-hub/ew-AIppt/blob/main/docs/faq.md) first — your issue may already have a known solution.
 
   - type: dropdown
     id: area

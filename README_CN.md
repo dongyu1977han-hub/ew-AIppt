@@ -1,21 +1,21 @@
 # PPT Master — AI 生成原生可编辑 PPTX，支持任意文档输入
 
-[![Version](https://img.shields.io/badge/version-v2.3.0-blue.svg)](https://github.com/hugohe3/ppt-master/releases)
+[![Version](https://img.shields.io/badge/version-v2.3.0-blue.svg)](https://github.com/dongyu1977han-hub/ew-AIppt/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub stars](https://img.shields.io/github/stars/hugohe3/ppt-master.svg)](https://github.com/hugohe3/ppt-master/stargazers)
-[![AtomGit stars](https://atomgit.com/hugohe3/ppt-master/star/badge.svg)](https://atomgit.com/hugohe3/ppt-master)
+[![GitHub stars](https://img.shields.io/github/stars/dongyu1977han-hub/ew-AIppt.svg)](https://github.com/dongyu1977han-hub/ew-AIppt/stargazers)
+[![AtomGit stars](https://atomgit.com/dongyu1977han-hub/ew-AIppt/star/badge.svg)](https://atomgit.com/dongyu1977han-hub/ew-AIppt)
 
 [English](./README.md) | 中文
 
 <p align="center">
-  <a href="https://hugohe3.github.io/ppt-master/"><strong>在线预览</strong></a> ·
+  <a href="https://dongyu1977han-hub.github.io/ew-AIppt/"><strong>在线预览</strong></a> ·
   <a href="https://www.hehugo.com/"><strong>关于何雨果</strong></a> ·
   <a href="./examples/"><strong>示例</strong></a> ·
   <a href="./docs/zh/faq.md"><strong>常见问题</strong></a> ·
   <a href="mailto:heyug3@gmail.com"><strong>联系我</strong></a>
 </p>
 
-> **官方渠道 —** 本项目**仅**在 [GitHub](https://github.com/hugohe3/ppt-master)（主仓库）和 [AtomGit](https://atomgit.com/hugohe3/ppt-master)（自动同步镜像）发布。其他平台上的转发版本均为非官方版本，不由作者维护。遵循 MIT 协议——使用需保留署名。
+> **官方渠道 —** 本项目**仅**在 [GitHub](https://github.com/dongyu1977han-hub/ew-AIppt)（主仓库）和 [AtomGit](https://atomgit.com/dongyu1977han-hub/ew-AIppt)（自动同步镜像）发布。其他平台上的转发版本均为非官方版本，不由作者维护。遵循 MIT 协议——使用需保留署名。
 
 ---
 
@@ -32,7 +32,7 @@ PPT Master 不一样：
 - **数据不出本地** — 你的文件不应该为了做一份 PPT 就被上传到别人的服务器。除与 AI 模型的对话外，全流程在你的电脑上完成
 - **不锁定平台** — 你的工作流不应该被任何一家公司绑架。Claude Code、Cursor、VS Code Copilot 等均可驱动；Claude、GPT、Gemini、Kimi 等模型均可使用
 
-**[在线预览 →](https://hugohe3.github.io/ppt-master/)** · [`examples/`](./examples/) — 15 个项目，229 页
+**[在线预览 →](https://dongyu1977han-hub.github.io/ew-AIppt/)** · [`examples/`](./examples/) — 15 个项目，229 页
 
 ## 效果展示
 
@@ -133,16 +133,16 @@ sudo apt install pandoc
 ### 3. 配置项目
 
 **方式 A — 下载 ZIP**（无需安装 Git）：
-[GitHub](https://github.com/hugohe3/ppt-master) → **Code → Download ZIP** · [AtomGit](https://atomgit.com/hugohe3/ppt-master) → **克隆/下载 → 下载ZIP**（国内网速更快）
+[GitHub](https://github.com/dongyu1977han-hub/ew-AIppt) → **Code → Download ZIP** · [AtomGit](https://atomgit.com/dongyu1977han-hub/ew-AIppt) → **克隆/下载 → 下载ZIP**（国内网速更快）
 
 **方式 B — Git clone**（需先安装 [Git](https://git-scm.com/downloads)）：
 
 ```bash
 # GitHub
-git clone https://github.com/hugohe3/ppt-master.git
+git clone https://github.com/dongyu1977han-hub/ew-AIppt.git
 # AtomGit（国内网速更快）
-git clone https://atomgit.com/hugohe3/ppt-master.git
-cd ppt-master
+git clone https://atomgit.com/dongyu1977han-hub/ew-AIppt.git
+cd ew-AIppt
 ```
 
 然后安装依赖：
@@ -236,8 +236,8 @@ GEMINI_MODEL=gemini-3.1-flash-image-preview
 
 欢迎合作交流、将 PPT Master 集成到你的工作流，或者单纯提问：
 
-- 💬 **提问与分享** — [GitHub Discussions](https://github.com/hugohe3/ppt-master/discussions)
-- 🐛 **Bug 反馈与功能建议** — [GitHub Issues](https://github.com/hugohe3/ppt-master/issues)
+- 💬 **提问与分享** — [GitHub Discussions](https://github.com/dongyu1977han-hub/ew-AIppt/discussions)
+- 🐛 **Bug 反馈与功能建议** — [GitHub Issues](https://github.com/dongyu1977han-hub/ew-AIppt/issues)
 - 📧 **商务 / 咨询 / 定制合作** — [heyug3@gmail.com](mailto:heyug3@gmail.com)
 - 🌐 **了解更多** — [www.hehugo.com](https://www.hehugo.com/)
 
@@ -247,11 +247,11 @@ GEMINI_MODEL=gemini-3.1-flash-image-preview
 
 如果这个项目对你有帮助，请给一个 ⭐！
 
-<a href="https://star-history.com/#hugohe3/ppt-master&Date">
+<a href="https://star-history.com/#dongyu1977han-hub/ew-AIppt&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=hugohe3/ppt-master&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=hugohe3/ppt-master&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=hugohe3/ppt-master&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=dongyu1977han-hub/ew-AIppt&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=dongyu1977han-hub/ew-AIppt&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=dongyu1977han-hub/ew-AIppt&type=Date" />
  </picture>
 </a>
 

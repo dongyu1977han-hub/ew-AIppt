@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#F5F7FA"/>
+  
+  <!-- Left Accent -->
+  <rect width="20" height="720" fill="#4067A1"/>
+  
+  <!-- Chapter Content -->
+  <g transform="translate(150, 360)">
+    <text font-family="'Microsoft YaHei', Arial, sans-serif" font-size="120" font-weight="bold" fill="#4067A1" fill-opacity="0.1">{{CHAPTER_NUM}}</text>
+    <text y="20" font-family="'Microsoft YaHei', Arial, sans-serif" font-size="72" font-weight="bold" fill="#4067A1">{{CHAPTER_TITLE}}</text>
+    <!-- Divider -->
+    <rect y="60" width="100" height="8" fill="#FFB300"/>
+  </g>
+  
+  <!-- Footer -->
+  <text x="1220" y="690" text-anchor="end" font-family="'Microsoft YaHei', Arial, sans-serif" font-size="14" fill="#BDC3C7">亿汇智科技（北京）有限公司</text>
+</svg>
