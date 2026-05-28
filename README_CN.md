@@ -151,7 +151,7 @@ cd ew-AIppt
 pip install -r requirements.txt
 ```
 
-日常更新（仅方式 B）：`python3 skills/ppt-master/scripts/update_repo.py`
+日常更新（仅方式 B）：`python3 skills/ew-AIppt/scripts/update_repo.py`
 
 ### 4. 开始创作
 
@@ -181,7 +181,7 @@ AI 全程处理——内容分析、视觉设计、SVG 生成、PPTX 导出。
 
 > **输出说明：** 两个带时间戳的文件保存至 `exports/` — 原生形状版 `.pptx`（可直接编辑）和 `_svg.pptx` 快照版（视觉参考备份）。需要 Office 2016+。
 
-> **AI 迷失上下文？** 让它先读 `skills/ppt-master/SKILL.md`。
+> **AI 迷失上下文？** 让它先读 `skills/ew-AIppt/SKILL.md`。
 
 > **遇到问题？** 查看 **[常见问题](./docs/zh/faq.md)** — 涵盖模型选择、排版问题、导出异常等，基于真实用户反馈持续更新。
 
@@ -199,7 +199,7 @@ GEMINI_MODEL=gemini-3.1-flash-image-preview
 
 支持的后端：`gemini` · `openai` · `qwen` · `zhipu` · `volcengine` · `stability` · `bfl` · `ideogram` · `siliconflow` · `fal` · `replicate`
 
-运行 `python3 skills/ppt-master/scripts/image_gen.py --list-backends` 查看分级。环境变量优先于 `.env`。使用各家独立的 Key（`GEMINI_API_KEY`、`OPENAI_API_KEY` 等）——不支持全局 `IMAGE_API_KEY`。
+运行 `python3 skills/ew-AIppt/scripts/image_gen.py --list-backends` 查看分级。环境变量优先于 `.env`。使用各家独立的 Key（`GEMINI_API_KEY`、`OPENAI_API_KEY` 等）——不支持全局 `IMAGE_API_KEY`。
 
 > **建议：** 高质量图片推荐在 [Gemini](https://gemini.google.com/) 中生成并选择 **Download full size**。去水印可用 `scripts/gemini_watermark_remover.py`。
 
@@ -211,9 +211,9 @@ GEMINI_MODEL=gemini-3.1-flash-image-preview
 |---|------|------|
 | 🆚 | [为什么选 PPT Master](./docs/zh/why-ppt-master.md) | 与 Gamma、Copilot 等工具的对比 |
 | 🪟 | [Windows 安装指南](./docs/zh/windows-installation.md) | Windows 用户手把手安装教程 |
-| 📖 | [SKILL.md](./skills/ppt-master/SKILL.md) | 核心流程与规则 |
-| 📐 | [画布格式](./skills/ppt-master/references/canvas-formats.md) | PPT 16:9、小红书、朋友圈等 10+ 种格式 |
-| 🛠️ | [脚本与工具](./skills/ppt-master/scripts/README.md) | 所有脚本和命令 |
+| 📖 | [SKILL.md](./skills/ew-AIppt/SKILL.md) | 核心流程与规则 |
+| 📐 | [画布格式](./skills/ew-AIppt/references/canvas-formats.md) | PPT 16:9、小红书、朋友圈等 10+ 种格式 |
+| 🛠️ | [脚本与工具](./skills/ew-AIppt/scripts/README.md) | 所有脚本和命令 |
 | 💼 | [示例](./examples/README.md) | 15 个项目，229 页 |
 | 🏗️ | [技术路线](./docs/zh/technical-design.md) | 架构、设计哲学、为什么选 SVG |
 | ❓ | [常见问题](./docs/zh/faq.md) | 模型选择、费用、排版问题排查、自定义模板 |

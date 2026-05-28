@@ -95,9 +95,9 @@ Four approaches: **A: Emoji** (`<text>🚀</text>`) | **B: AI-generated** (SVG b
 
 **Searching for icons** — use terminal, zero token cost:
 ```bash
-ls skills/ppt-master/templates/icons/chunk/ | grep home
-ls skills/ppt-master/templates/icons/tabler-filled/ | grep home
-ls skills/ppt-master/templates/icons/tabler-outline/ | grep chart
+ls skills/ew-AIppt/templates/icons/chunk/ | grep home
+ls skills/ew-AIppt/templates/icons/tabler-filled/ | grep home
+ls skills/ew-AIppt/templates/icons/tabler-outline/ | grep chart
 ```
 
 **Abstract concept → icon name** (names for `chunk`; tabler libraries use their own equivalents — verify with `ls | grep`):

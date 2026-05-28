@@ -52,7 +52,7 @@ ls -la "<reference_source_path>"
 If the reference source is a `.pptx` template file, use the unified preparation helper:
 
 ```bash
-python3 skills/ppt-master/scripts/pptx_template_import.py "<reference_template.pptx>"
+python3 skills/ew-AIppt/scripts/pptx_template_import.py "<reference_template.pptx>"
 ```
 
 This helper performs the full PPTX reference preparation in one workspace:
@@ -129,10 +129,10 @@ If no `.pptx` source is involved, this step can be skipped.
 ## Step 3: Create Template Directory
 
 ```bash
-mkdir -p "skills/ppt-master/templates/layouts/<template_id>"
+mkdir -p "skills/ew-AIppt/templates/layouts/<template_id>"
 ```
 
-> **Output location**: Global templates go to `skills/ppt-master/templates/layouts/`; project templates go to `projects/<project>/templates/`
+> **Output location**: Global templates go to `skills/ew-AIppt/templates/layouts/`; project templates go to `projects/<project>/templates/`
 >
 > The generated directory name must match the final template ID used in `layouts_index.json`.
 
@@ -177,13 +177,13 @@ The role should use the import output to anchor objective facts such as theme co
 ## Step 5: Validate Template Assets
 
 ```bash
-ls -la "skills/ppt-master/templates/layouts/<template_id>"
+ls -la "skills/ew-AIppt/templates/layouts/<template_id>"
 ```
 
 Run SVG validation on the template directory:
 
 ```bash
-python3 skills/ppt-master/scripts/svg_quality_checker.py "skills/ppt-master/templates/layouts/<template_id>" --format <canvas_format>
+python3 skills/ew-AIppt/scripts/svg_quality_checker.py "skills/ew-AIppt/templates/layouts/<template_id>" --format <canvas_format>
 ```
 
 **Checklist**:
@@ -201,7 +201,7 @@ This step is a **hard gate**. Do not register the template into the library inde
 
 ## Step 6: Register Template in Library Index
 
-Update `skills/ppt-master/templates/layouts/layouts_index.json`:
+Update `skills/ew-AIppt/templates/layouts/layouts_index.json`:
 
 - `meta.total`
 - `meta.updated`
@@ -221,7 +221,7 @@ If the human-facing `templates/layouts/README.md` summary table is maintained ma
 ## Template Creation Complete
 
 **Template Name**: <template_id> (<display_name>)
-**Template Path**: `skills/ppt-master/templates/layouts/<template_id>/`
+**Template Path**: `skills/ew-AIppt/templates/layouts/<template_id>/`
 **Category**: <category>
 **Canvas Format**: <canvas_format>
 **Index Registration**: Done

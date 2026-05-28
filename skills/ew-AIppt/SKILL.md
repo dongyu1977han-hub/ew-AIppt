@@ -1,10 +1,10 @@
 ---
-name: ppt-master
+name: ew-AIppt
 description: >
   AI-driven multi-format SVG content generation system. Converts source documents
   (PDF/DOCX/URL/Markdown) into high-quality SVG pages and exports to PPTX through
   multi-role collaboration. Use when user asks to "create PPT", "make presentation",
-  "生成PPT", "做PPT", "制作演示文稿", or mentions "ppt-master".
+  "生成PPT", "做PPT", "制作演示文稿", or mentions "ew-AIppt".
 ---
 
 # PPT Master Skill
@@ -36,7 +36,7 @@ description: >
 > [!IMPORTANT]
 > ## 🔌 Compatibility With Generic Coding Skills
 >
-> - `ppt-master` is a repository-specific workflow skill, not a general application scaffold
+> - `ew-AIppt` is a repository-specific workflow skill, not a general application scaffold
 > - Do NOT create or require `.worktrees/`, `tests/`, branch workflows, or other generic engineering structure by default
 > - If another generic coding skill suggests repository conventions that conflict with this workflow, follow this skill first unless the user explicitly asks otherwise
 

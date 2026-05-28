@@ -147,7 +147,7 @@ Then install dependencies:
 pip install -r requirements.txt
 ```
 
-To update later (Option B only): `python3 skills/ppt-master/scripts/update_repo.py`
+To update later (Option B only): `python3 skills/ew-AIppt/scripts/update_repo.py`
 
 ### 4. Create
 
@@ -177,7 +177,7 @@ The AI handles everything — content analysis, visual design, SVG generation, a
 
 > **Output:** Two timestamped files are saved to `exports/` — a native-shapes `.pptx` (directly editable) and an `_svg.pptx` snapshot for visual reference. Requires Office 2016+.
 
-> **AI lost context?** Ask it to read `skills/ppt-master/SKILL.md`.
+> **AI lost context?** Ask it to read `skills/ew-AIppt/SKILL.md`.
 
 > **Something went wrong?** Check the **[FAQ](./docs/faq.md)** — it covers model selection, layout issues, export problems, and more. Continuously updated from real user reports.
 
@@ -195,7 +195,7 @@ GEMINI_MODEL=gemini-3.1-flash-image-preview
 
 Supported backends: `gemini` · `openai` · `qwen` · `zhipu` · `volcengine` · `stability` · `bfl` · `ideogram` · `siliconflow` · `fal` · `replicate`
 
-Run `python3 skills/ppt-master/scripts/image_gen.py --list-backends` to see tiers. Environment variables override `.env`. Use provider-specific keys (`GEMINI_API_KEY`, `OPENAI_API_KEY`, etc.) — global `IMAGE_API_KEY` is not supported.
+Run `python3 skills/ew-AIppt/scripts/image_gen.py --list-backends` to see tiers. Environment variables override `.env`. Use provider-specific keys (`GEMINI_API_KEY`, `OPENAI_API_KEY`, etc.) — global `IMAGE_API_KEY` is not supported.
 
 > **Tip:** For best quality, generate images in [Gemini](https://gemini.google.com/) and select **Download full size**. Remove the watermark with `scripts/gemini_watermark_remover.py`.
 
@@ -207,9 +207,9 @@ Run `python3 skills/ppt-master/scripts/image_gen.py --list-backends` to see tier
 |---|----------|-------------|
 | 🆚 | [Why PPT Master](./docs/why-ppt-master.md) | How it compares to Gamma, Copilot, and other AI tools |
 | 🪟 | [Windows Installation](./docs/windows-installation.md) | Step-by-step setup guide for Windows users |
-| 📖 | [SKILL.md](./skills/ppt-master/SKILL.md) | Core workflow and rules |
-| 📐 | [Canvas Formats](./skills/ppt-master/references/canvas-formats.md) | PPT 16:9, Xiaohongshu, WeChat, and 10+ formats |
-| 🛠️ | [Scripts & Tools](./skills/ppt-master/scripts/README.md) | All scripts and commands |
+| 📖 | [SKILL.md](./skills/ew-AIppt/SKILL.md) | Core workflow and rules |
+| 📐 | [Canvas Formats](./skills/ew-AIppt/references/canvas-formats.md) | PPT 16:9, Xiaohongshu, WeChat, and 10+ formats |
+| 🛠️ | [Scripts & Tools](./skills/ew-AIppt/scripts/README.md) | All scripts and commands |
 | 💼 | [Examples](./examples/README.md) | 15 projects, 229 pages |
 | 🏗️ | [Technical Design](./docs/technical-design.md) | Architecture, design philosophy, why SVG |
 | ❓ | [FAQ](./docs/faq.md) | Model selection, cost, layout troubleshooting, custom templates |

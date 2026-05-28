@@ -116,4 +116,4 @@ The AI agent will handle the rest — analyzing your screenshots, building the l
 
 ---
 
-> For more questions, see [SKILL.md](../skills/ppt-master/SKILL.md) and [AGENTS.md](../AGENTS.md)
+> For more questions, see [SKILL.md](../skills/ew-AIppt/SKILL.md) and [AGENTS.md](../AGENTS.md)

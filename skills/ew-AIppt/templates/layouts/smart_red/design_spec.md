@@ -205,4 +205,4 @@
 1. Copy this directory to the project directory.
 2. Select the appropriate page template based on content requirements.
 3. Modify the text content in the SVG files or replace images.
-4. Use the `ppt-master` tool to generate the PPTX file.
+4. Use the `ew-AIppt` tool to generate the PPTX file.
