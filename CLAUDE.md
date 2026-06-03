@@ -23,6 +23,10 @@ python3 skills/ew-AIppt/scripts/project_manager.py init <project_name> --format 
 python3 skills/ew-AIppt/scripts/project_manager.py import-sources <project_path> <source_files_or_URLs...> --move
 python3 skills/ew-AIppt/scripts/project_manager.py validate <project_path>
 
+# Template library: split multi-page PPTX into single-page templates + auto-classify tags
+python3 skills/ew-AIppt/scripts/ppt_split_classify.py <input.pptx> [--output-dir <dir>] [--name <prefix>]
+# Output: template-library/<name>/slide_NNN.pptx + manifest.json
+
 # Image tools
 python3 skills/ew-AIppt/scripts/analyze_images.py <project_path>/images
 python3 skills/ew-AIppt/scripts/image_gen.py "prompt" --aspect_ratio 16:9 --image_size 1K -o <project_path>/images
