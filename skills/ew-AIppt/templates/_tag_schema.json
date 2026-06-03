@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "meta": {
+    "name": "EW-TTS (Template Tag Schema)",
+    "version": "2.0",
+    "description": "PPT 模版多维标签分类体系 — 统一定义文件",
+    "updated": "2026-06-03",
+    "usage": "ew-AIppt 模版推荐 + officeComPlugin 侧边栏插件 共用"
+  },
+  "dimensions": [
+    {
+      "id": "logic",
+      "index": 1,
+      "name": "逻辑拓扑标签",
+      "nameEn": "Logic-Tag",
+      "description": "页面布局的逻辑关系结构",
+      "tags": [
+        { "id": "parallel",    "name": "并列",  "nameEn": "Parallel",    "color": "#4CAF50" },
+        { "id": "sequential",  "name": "递进",  "nameEn": "Sequential",  "color": "#2196F3" },
+        { "id": "star",        "name": "星型",  "nameEn": "Star",        "color": "#FF9800" },
+        { "id": "contrast",    "name": "对比",  "nameEn": "Contrast",    "color": "#F44336" },
+        { "id": "hierarchy",   "name": "层级",  "nameEn": "Hierarchy",   "color": "#9C27B0" },
+        { "id": "matrix",      "name": "矩阵",  "nameEn": "Matrix",      "color": "#00BCD4" },
+        { "id": "cycle",       "name": "循环",  "nameEn": "Cycle",       "color": "#FF5722" },
+        { "id": "pyramid",     "name": "棱锥",  "nameEn": "Pyramid",     "color": "#795548" },
+        { "id": "other",       "name": "其它",  "nameEn": "Other",       "color": "#9E9E9E" }
+      ]
+    },
+    {
+      "id": "domain",
+      "index": 2,
+      "name": "内容领域标签",
+      "nameEn": "Domain-Tag",
+      "description": "模版适用的行业或业务领域",
+      "tags": [
+        { "id": "strategy",      "name": "战略",  "nameEn": "Strategy",      "color": "#1565C0" },
+        { "id": "current-state", "name": "现状",  "nameEn": "Current State", "color": "#4E342E" },
+        { "id": "architecture",  "name": "架构",  "nameEn": "Architecture",  "color": "#283593" },
+        { "id": "technology",    "name": "技术",  "nameEn": "Technology",    "color": "#00838F" },
+        { "id": "organization",  "name": "组织",  "nameEn": "Organization",  "color": "#6A1B9A" },
+        { "id": "operation",     "name": "运营",  "nameEn": "Operation",     "color": "#2E7D32" },
+        { "id": "other",         "name": "其它",  "nameEn": "Other",         "color": "#9E9E9E" }
+      ]
+    },
+    {
+      "id": "count",
+      "index": 3,
+      "name": "数量规模标签",
+      "nameEn": "Count-Tag",
+      "description": "页面核心内容区域的数量",
+      "tags": [
+        { "id": "count-1",      "name": "一项",        "nameEn": "1 Item",        "color": "#E8F5E9" },
+        { "id": "count-2",      "name": "两项",        "nameEn": "2 Items",       "color": "#C8E6C9" },
+        { "id": "count-3",      "name": "三项",        "nameEn": "3 Items",       "color": "#A5D6A7" },
+        { "id": "count-4",      "name": "四项",        "nameEn": "4 Items",       "color": "#81C784" },
+        { "id": "count-5",      "name": "五项",        "nameEn": "5 Items",       "color": "#66BB6A" },
+        { "id": "count-6",      "name": "六项",        "nameEn": "6 Items",       "color": "#4CAF50" },
+        { "id": "count-7-plus", "name": "七项及以上",  "nameEn": "7+ Items",      "color": "#388E3C" }
+      ]
+    },
+    {
+      "id": "chart-type",
+      "index": 4,
+      "name": "图形类型标签",
+      "nameEn": "ChartType-Tag",
+      "description": "页面使用的主要图形/可视化类型",
+      "tags": [
+        { "id": "timeline",            "name": "时间轴",    "nameEn": "Timeline",             "color": "#42A5F5" },
+        { "id": "house-chart",         "name": "屋型图",    "nameEn": "House Chart",          "color": "#66BB6A" },
+        { "id": "logic-steps",         "name": "逻辑步骤",  "nameEn": "Logic Steps",          "color": "#FFA726" },
+        { "id": "value-tree",          "name": "价值树",    "nameEn": "Value Tree",           "color": "#AB47BC" },
+        { "id": "business-arch",       "name": "业务架构",  "nameEn": "Business Architecture","color": "#26A69A" },
+        { "id": "app-arch",            "name": "应用架构",  "nameEn": "Application Arch.",    "color": "#5C6BC0" },
+        { "id": "data-arch",           "name": "数据架构",  "nameEn": "Data Architecture",    "color": "#29B6F6" },
+        { "id": "tech-arch",           "name": "技术架构",  "nameEn": "Technical Architecture","color": "#78909C" },
+        { "id": "process-value-chain", "name": "流程价值链","nameEn": "Process Value Chain",  "color": "#FFCA28" },
+        { "id": "scenario-map",        "name": "场景图",    "nameEn": "Scenario Map",         "color": "#EC407A" },
+        { "id": "org-structure",       "name": "组织架构",  "nameEn": "Org Structure",        "color": "#7E57C2" },
+        { "id": "gantt",               "name": "甘特图",    "nameEn": "Gantt Chart",          "color": "#26C6DA" },
+        { "id": "kpi-system",          "name": "指标体系",  "nameEn": "KPI System",           "color": "#EF5350" },
+        { "id": "implementation-phase","name": "实施阶段",  "nameEn": "Implementation Phase", "color": "#8D6E63" },
+        { "id": "ecosystem",           "name": "生态图",    "nameEn": "Ecosystem",            "color": "#00E676" },
+        { "id": "other",               "name": "其它",      "nameEn": "Other",                "color": "#BDBDBD" }
+      ]
+    }
+  ]
+}

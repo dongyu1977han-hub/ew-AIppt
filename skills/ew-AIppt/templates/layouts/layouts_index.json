@@ -5,7 +5,9 @@
     "formats": ["ppt169"],
     "standardFiles": ["design_spec.md", "01_cover.svg", "02_toc.svg", "03_content.svg", "03_content_with_subtitle.svg", "04_content_no_subtitle.svg", "04_ending.svg", "05_ending.svg"],
     "standardPageTypes": ["cover", "toc", "chapter", "content", "ending"],
-    "updated": "2026-04-25"
+    "updated": "2026-06-03",
+    "tagSchema": "_tag_schema.json",
+    "tagVersion": "2.0"
   },
   "categories": {
     "brand": {
@@ -49,7 +51,13 @@
       "summary": "A standard template for academic defenses, research presentations, and project proposals",
       "tone": "Professional, rigorous, research-oriented, clear hierarchy",
       "themeMode": "Light theme (white background + dark blue title bar)",
-      "keywords": ["Academic", "Defense", "Research", "Standard"]
+      "keywords": ["Academic", "Defense", "Research", "Standard"],
+      "tags": {
+        "logic": ["sequential", "parallel"],
+        "domain": ["technology"],
+        "count": ["count-2", "count-3"],
+        "chart-type": ["timeline", "logic-steps"]
+      }
     },
     "ai_ops": {
       "label": "Enterprise Digital Intelligence Template",
@@ -57,14 +65,26 @@
       "tone": "Information-dense, structured, modular layout, telecom/government-enterprise style",
       "themeMode": "Light theme (white background + red/blue accents + warm gray panels)",
       "assets": ["reference_style.svg"],
-      "keywords": ["Telecom", "AI operations", "Digital intelligence", "High density", "Architecture view"]
+      "keywords": ["Telecom", "AI operations", "Digital intelligence", "High density", "Architecture view"],
+      "tags": {
+        "logic": ["matrix", "hierarchy"],
+        "domain": ["architecture", "technology", "operation"],
+        "count": ["count-4", "count-5", "count-7-plus"],
+        "chart-type": ["tech-arch", "app-arch", "business-arch", "scenario-map"]
+      }
     },
     "anthropic": {
       "label": "Anthropic Style Template",
       "summary": "A tech-oriented template for AI/LLM knowledge sharing and product launches",
       "tone": "Tech-forward, professional, modern, conclusion-first",
       "themeMode": "Hybrid theme (dark cover/chapter + light content pages)",
-      "keywords": ["AI", "LLM", "Developer", "Technology"]
+      "keywords": ["AI", "LLM", "Developer", "Technology"],
+      "tags": {
+        "logic": ["parallel", "hierarchy"],
+        "domain": ["technology"],
+        "count": ["count-2", "count-3"],
+        "chart-type": ["logic-steps", "tech-arch"]
+      }
     },
     "ew_template": {
       "label": "亿汇智标准模版 (蓝灰 2026 V1.0)",
@@ -91,70 +111,130 @@
         "footer": "#428AC8",
         "bg": "#FFFFFF"
       },
-      "keywords": ["亿汇智", "EW", "央国企", "商务汇报", "方案建议书", "蓝灰"]
+      "keywords": ["亿汇智", "EW", "央国企", "商务汇报", "方案建议书", "蓝灰"],
+      "tags": {
+        "logic": ["parallel", "hierarchy"],
+        "domain": ["strategy", "current-state", "architecture"],
+        "count": ["count-2", "count-3", "count-4"],
+        "chart-type": ["logic-steps", "timeline"]
+      }
     },
     "exhibit": {
       "label": "Exhibit Style Template",
       "summary": "Conclusion-first layout with Exhibit takeaway bars for data-driven strategic reports and executive presentations",
       "tone": "Premium, refined, authoritative, data-driven, conclusion-first",
       "themeMode": "Dark theme (dark background + gradient accent + gold highlights)",
-      "keywords": ["Exhibit", "Board", "Executive", "Strategy", "Conclusion-first"]
+      "keywords": ["Exhibit", "Board", "Executive", "Strategy", "Conclusion-first"],
+      "tags": {
+        "logic": ["hierarchy", "contrast"],
+        "domain": ["strategy"],
+        "count": ["count-1", "count-2"],
+        "chart-type": ["kpi-system", "value-tree"]
+      }
     },
     "google_style": {
       "label": "Google Style Template",
       "summary": "A Google-branded template for annual reports and technical sharing",
       "tone": "Professional, modern, clean and restrained, data-driven, ample whitespace",
       "themeMode": "Light theme (white/light gray background + Google brand color accents)",
-      "keywords": ["Google", "Brand style", "Technical sharing", "Annual report"]
+      "keywords": ["Google", "Brand style", "Technical sharing", "Annual report"],
+      "tags": {
+        "logic": ["parallel", "hierarchy"],
+        "domain": ["technology", "operation"],
+        "count": ["count-2", "count-3"],
+        "chart-type": ["timeline", "logic-steps"]
+      }
     },
     "government_blue": {
       "label": "Government Blue Template",
       "summary": "A blue government-themed template for smart governance and digital transformation reports",
       "tone": "Grand, tech-forward, modernized, professional government style",
       "themeMode": "Light theme (white background + blue gradient decorations)",
-      "keywords": ["Government affairs", "Government blue", "Smart city", "Digitalization"]
+      "keywords": ["Government affairs", "Government blue", "Smart city", "Digitalization"],
+      "tags": {
+        "logic": ["hierarchy", "parallel"],
+        "domain": ["architecture", "operation"],
+        "count": ["count-3", "count-4"],
+        "chart-type": ["logic-steps", "business-arch"]
+      }
     },
     "government_red": {
       "label": "Government Red Template",
       "summary": "A red government-themed template for government reports and party-building scenarios",
       "tone": "Authoritative, solemn, professional, modernized government style",
       "themeMode": "Light theme (white background + government red/blue accents)",
-      "keywords": ["Government affairs", "Party building", "Government red", "Authoritative"]
+      "keywords": ["Government affairs", "Party building", "Government red", "Authoritative"],
+      "tags": {
+        "logic": ["hierarchy", "parallel"],
+        "domain": ["organization", "current-state"],
+        "count": ["count-3", "count-4"],
+        "chart-type": ["logic-steps", "org-structure"]
+      }
     },
     "mckinsey": {
       "label": "McKinsey Style Template",
       "summary": "A McKinsey-style template for strategic consulting and investment analysis",
       "tone": "Data-driven, structured thinking, professional whitespace, minimalist premium",
       "themeMode": "Light theme (white background + McKinsey Blue accent)",
-      "keywords": ["McKinsey", "Consulting", "Structured", "Executive presentation"]
+      "keywords": ["McKinsey", "Consulting", "Structured", "Executive presentation"],
+      "tags": {
+        "logic": ["hierarchy", "contrast"],
+        "domain": ["strategy"],
+        "count": ["count-1", "count-2"],
+        "chart-type": ["value-tree", "kpi-system"]
+      }
     },
     "medical_university": {
       "label": "Hospital/Medical University Template",
       "summary": "A professional template for medical reports, case discussions, and research presentations",
       "tone": "Professional, rigorous, life-affirming, tech-forward, trustworthy",
       "themeMode": "Light theme (white background + medical blue title bar + life green accents)",
-      "keywords": ["Medical", "Hospital", "Case study", "Research"]
+      "keywords": ["Medical", "Hospital", "Case study", "Research"],
+      "tags": {
+        "logic": ["parallel", "sequential"],
+        "domain": ["technology"],
+        "count": ["count-3", "count-4"],
+        "chart-type": ["logic-steps"]
+      }
     },
     "pixel_retro": {
       "label": "Pixel Retro Template",
       "summary": "A pixel-art template for tech sharing and gaming-themed content",
       "tone": "Retro gaming, neon cyber, geek tech, 8-bit style",
       "themeMode": "Dark theme (deep space black background + neon accents)",
-      "keywords": ["Pixel art", "Retro gaming", "Cyberpunk", "Technology"]
+      "keywords": ["Pixel art", "Retro gaming", "Cyberpunk", "Technology"],
+      "tags": {
+        "logic": ["parallel", "star"],
+        "domain": ["technology"],
+        "count": ["count-2", "count-3"],
+        "chart-type": ["other"]
+      }
     },
     "psychology_attachment": {
       "label": "Psychology Healing Template",
       "summary": "A warm and professional template for psychotherapy training and counseling lectures",
       "tone": "Professional, warm, healing, trustworthy",
       "themeMode": "Light theme (cloud white background + blue-green gradient accent + colorful semantic colors)",
-      "keywords": ["Psychology", "Healing", "Counseling", "Warm"]
+      "keywords": ["Psychology", "Healing", "Counseling", "Warm"],
+      "tags": {
+        "logic": ["parallel", "cycle"],
+        "domain": ["other"],
+        "count": ["count-2", "count-3"],
+        "chart-type": ["cycle", "scenario-map"]
+      }
     },
     "smart_red": {
       "label": "Smart Red-Orange Business Template",
       "summary": "A vibrant business template for tech company introductions and education solutions",
       "tone": "Modern, vibrant, professional, geometric",
       "themeMode": "Hybrid theme (dark/colorful cover + light content pages)",
-      "keywords": ["Red-orange business", "Tech enterprise", "Education", "Vibrant"]
+      "keywords": ["Red-orange business", "Tech enterprise", "Education", "Vibrant"],
+      "tags": {
+        "logic": ["parallel", "hierarchy"],
+        "domain": ["technology", "operation"],
+        "count": ["count-2", "count-3", "count-4"],
+        "chart-type": ["logic-steps"]
+      }
     },
     "中国电建_常规": {
       "label": "PowerChina Standard Template",
@@ -162,7 +242,13 @@
       "tone": "Professional, steady, international, state-owned enterprise style",
       "themeMode": "Light theme (white background + PowerChina blue accent)",
       "assets": ["中国水务logo.png", "华东院logo.png", "水电三局logo.png", "电建logo.png"],
-      "keywords": ["PowerChina", "State-owned enterprise", "Engineering", "Energy"]
+      "keywords": ["PowerChina", "State-owned enterprise", "Engineering", "Energy"],
+      "tags": {
+        "logic": ["hierarchy", "parallel"],
+        "domain": ["architecture", "operation"],
+        "count": ["count-3", "count-4"],
+        "chart-type": ["business-arch", "org-structure"]
+      }
     },
     "中国电建_现代": {
       "label": "PowerChina Modern Template",
@@ -170,7 +256,13 @@
       "tone": "Grand narrative, modern precision, digital technology, international vision",
       "themeMode": "Deep blue tech gradient + precision grid texture",
       "assets": ["中国水务logo.png", "华东院logo.png", "水电三局logo.png", "电建logo.png"],
-      "keywords": ["PowerChina", "International engineering", "Modern engineering", "Technology"]
+      "keywords": ["PowerChina", "International engineering", "Modern engineering", "Technology"],
+      "tags": {
+        "logic": ["matrix", "hierarchy"],
+        "domain": ["architecture", "technology"],
+        "count": ["count-3", "count-4", "count-5"],
+        "chart-type": ["tech-arch", "app-arch", "business-arch"]
+      }
     },
     "中汽研_商务": {
       "label": "CATARC Business Template",
@@ -178,7 +270,13 @@
       "tone": "Modern tech, authoritative professional, composed and grand",
       "themeMode": "Deep blue tech gradient + clean white content pages",
       "assets": ["右上角 logo.png", "大型 logo.png"],
-      "keywords": ["CATARC", "Certification", "Business", "Technology"]
+      "keywords": ["CATARC", "Certification", "Business", "Technology"],
+      "tags": {
+        "logic": ["hierarchy", "matrix"],
+        "domain": ["technology", "strategy"],
+        "count": ["count-3", "count-4"],
+        "chart-type": ["logic-steps", "kpi-system"]
+      }
     },
     "中汽研_常规": {
       "label": "CATARC Standard Template",
@@ -186,7 +284,13 @@
       "tone": "Professional, authoritative, trustworthy, consulting style",
       "themeMode": "Light theme (white background + dark blue accent)",
       "assets": ["右上角 logo.png", "大型 logo.png"],
-      "keywords": ["CATARC", "Certification", "Testing", "Authoritative"]
+      "keywords": ["CATARC", "Certification", "Testing", "Authoritative"],
+      "tags": {
+        "logic": ["hierarchy", "parallel"],
+        "domain": ["current-state", "operation"],
+        "count": ["count-3", "count-4"],
+        "chart-type": ["logic-steps"]
+      }
     },
     "中汽研_现代": {
       "label": "CATARC Modern Template",
@@ -194,7 +298,13 @@
       "tone": "Futuristic, tech-forward, deep, refined",
       "themeMode": "Immersive dark cover/transition pages + clean light gray content pages",
       "assets": ["右上角 logo.png", "大型 logo.png"],
-      "keywords": ["CATARC", "Future tech", "Cutting-edge technology", "Launch event"]
+      "keywords": ["CATARC", "Future tech", "Cutting-edge technology", "Launch event"],
+      "tags": {
+        "logic": ["matrix", "star"],
+        "domain": ["technology", "strategy"],
+        "count": ["count-3", "count-4", "count-5"],
+        "chart-type": ["tech-arch", "scenario-map"]
+      }
     },
     "招商银行": {
       "label": "China Merchants Bank Transaction Banking Template",
@@ -202,14 +312,26 @@
       "tone": "Brand-consistent, structured, product-focused, refined finance",
       "themeMode": "Hybrid theme (brand-red cover/chapter/ending + light content pages)",
       "assets": ["cover_bg.png", "logo_white.png", "logo_dark.png", "page_header_bg.png", "logo_crm_banner.png", "ref_content_bg.png"],
-      "keywords": ["China Merchants Bank", "Transaction banking", "Sales collection", "Finance", "Training"]
+      "keywords": ["China Merchants Bank", "Transaction banking", "Sales collection", "Finance", "Training"],
+      "tags": {
+        "logic": ["hierarchy", "parallel"],
+        "domain": ["strategy", "operation"],
+        "count": ["count-3", "count-4"],
+        "chart-type": ["logic-steps", "kpi-system"]
+      }
     },
     "科技蓝商务": {
       "label": "Tech Blue Business Template",
       "summary": "A tech-business template for corporate reports and solution proposals",
       "tone": "Tech-forward, business, professional, clean",
       "themeMode": "Hybrid theme (dark blue/tech blue cover + light content pages)",
-      "keywords": ["Tech blue", "Business", "Solution proposal", "Corporate report"]
+      "keywords": ["Tech blue", "Business", "Solution proposal", "Corporate report"],
+      "tags": {
+        "logic": ["parallel", "hierarchy"],
+        "domain": ["technology", "strategy"],
+        "count": ["count-3", "count-4"],
+        "chart-type": ["logic-steps"]
+      }
     },
     "重庆大学": {
       "label": "Chongqing University Template",
@@ -217,7 +339,13 @@
       "tone": "Academically composed, mountain-city essence, modern minimalist",
       "themeMode": "Academic blue primary + mountain-city layered imagery",
       "assets": ["重庆大学logo.png", "重庆大学logo2.png"],
-      "keywords": ["Chongqing University", "Academic", "Defense", "University"]
+      "keywords": ["Chongqing University", "Academic", "Defense", "University"],
+      "tags": {
+        "logic": ["parallel", "hierarchy"],
+        "domain": ["technology"],
+        "count": ["count-3", "count-4"],
+        "chart-type": ["logic-steps", "timeline"]
+      }
     }
   }
 }
