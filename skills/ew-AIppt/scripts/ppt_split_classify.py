@@ -116,9 +116,14 @@ def is_title_shape(shape, slide_height: int) -> bool:
     if not shape.has_text_frame and shape.shape_type not in (
         MSO_SHAPE_TYPE.PICTURE, MSO_SHAPE_TYPE.PLACEHOLDER
     ):
-        # 但保留有连接线的形状（可能是流程图的一部分）
-        if not hasattr(shape, "connector") or not shape.connector:
-            return True
+        # 保留表格、图表、连接线
+        if hasattr(shape, "table"):
+            return False
+        if hasattr(shape, "has_chart") and shape.has_chart:
+            return False
+        if hasattr(shape, "connector") and shape.connector:
+            return False
+        return True
     return False
 
 
@@ -462,7 +467,8 @@ CHART_TYPE_TAG_ORDER = [
     "timeline", "house-chart", "logic-steps", "value-tree",
     "business-arch", "app-arch", "data-arch", "tech-arch",
     "process-value-chain", "scenario-map", "org-structure",
-    "gantt", "kpi-system", "implementation-phase", "ecosystem", "other"
+    "gantt", "kpi-system", "implementation-phase", "ecosystem",
+    "table", "chart", "other"
 ]
 
 CHART_TYPE_KEYWORDS = {
@@ -481,6 +487,8 @@ CHART_TYPE_KEYWORDS = {
     "value-tree": ["价值树", "value tree", "分解", "拆解", "wbs"],
     "scenario-map": ["场景", "scenario", "用例", "use case"],
     "ecosystem": ["生态", "ecosystem", "联盟", "合作"],
+    "table": ["表格", "table", "明细", "清单", "列表", "对照表", "一览表", "统计表"],
+    "chart": ["图表", "chart", "柱状图", "折线图", "饼图", "bar chart", "line chart", "pie chart", "趋势图", "数据图"],
 }
 
 
@@ -488,7 +496,20 @@ def classify_chart_type(slide, content_shapes: list, slide_width: int, slide_hei
     """基于文本关键词和视觉模式判断图形类型"""
     all_text = extract_text(slide).lower()
 
-    # ── 关键词匹配（优先） ──
+    # ── shape 类型直接检测（最可靠） ──
+    has_table = any(hasattr(s, "table") for s in content_shapes)
+    has_chart = any(hasattr(s, "has_chart") and s.has_chart for s in content_shapes)
+    if has_table and has_chart:
+        # 同时有表格和图表时，看哪个面积更大
+        table_area = sum(s.width * s.height for s in content_shapes if hasattr(s, "table"))
+        chart_area = sum(s.width * s.height for s in content_shapes if hasattr(s, "has_chart") and s.has_chart)
+        return "table" if table_area >= chart_area else "chart"
+    if has_table:
+        return "table"
+    if has_chart:
+        return "chart"
+
+    # ── 关键词匹配 ──
     for tag_id, keywords in CHART_TYPE_KEYWORDS.items():
         for kw in keywords:
             if kw.lower() in all_text:
@@ -754,11 +775,14 @@ def run(input_path: str, output_dir: str = None, name_prefix: str = ""):
 
         tags = classify_slide(pptx_file, 0, slide_width, slide_height)
 
+        thumb_name = Path(entry["file"]).stem + ".png"
         manifest_entry = {
             "slide_index": idx,
             "file_name": entry["file"],
             "file_path": entry["path"],
+            "thumbnail": os.path.join(output_dir, "thumbnails", thumb_name),
             "tags": tags,
+            "confidence": None,  # AI 校验后填充
         }
         manifest_entries.append(manifest_entry)
 
