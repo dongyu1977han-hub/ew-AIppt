@@ -80,8 +80,8 @@
         { "id": "kpi-system",          "name": "指标体系",  "nameEn": "KPI System",           "color": "#EF5350" },
         { "id": "implementation-phase","name": "实施阶段",  "nameEn": "Implementation Phase", "color": "#8D6E63" },
         { "id": "ecosystem",           "name": "生态图",    "nameEn": "Ecosystem",            "color": "#00E676" },
-        { "id": "table",               "name": "表格",      "nameEn": "Table",                "color": "#78909C" },
-        { "id": "chart",               "name": "图表",      "nameEn": "Chart",                "color": "#5C6BC0" },
+        { "id": "table",               "name": "表格",      "nameEn": "Table",                "color": "#607D8B" },
+        { "id": "chart",               "name": "图表",      "nameEn": "Chart",                "color": "#FF7043" },
         { "id": "other",               "name": "其它",      "nameEn": "Other",                "color": "#BDBDBD" }
       ]
     }

@@ -91,12 +91,15 @@ def extract_text(shape_or_slide) -> str:
             t = para.text.strip()
             if t:
                 texts.append(t)
-    if hasattr(shape, "table"):
-        for row in shape.table.rows:
-            for cell in row.cells:
-                t = cell.text.strip()
-                if t:
-                    texts.append(t)
+    try:
+        if hasattr(shape, "table"):
+            for row in shape.table.rows:
+                for cell in row.cells:
+                    t = cell.text.strip()
+                    if t:
+                        texts.append(t)
+    except (ValueError, AttributeError):
+        pass
     if shape.shape_type == MSO_SHAPE_TYPE.GROUP:
         for child in shape.shapes:
             texts.extend(extract_text(child).split("\n"))
@@ -116,14 +119,9 @@ def is_title_shape(shape, slide_height: int) -> bool:
     if not shape.has_text_frame and shape.shape_type not in (
         MSO_SHAPE_TYPE.PICTURE, MSO_SHAPE_TYPE.PLACEHOLDER
     ):
-        # 保留表格、图表、连接线
-        if hasattr(shape, "table"):
-            return False
-        if hasattr(shape, "has_chart") and shape.has_chart:
-            return False
-        if hasattr(shape, "connector") and shape.connector:
-            return False
-        return True
+        # 但保留有连接线的形状（可能是流程图的一部分）
+        if not hasattr(shape, "connector") or not shape.connector:
+            return True
     return False
 
 
@@ -467,8 +465,7 @@ CHART_TYPE_TAG_ORDER = [
     "timeline", "house-chart", "logic-steps", "value-tree",
     "business-arch", "app-arch", "data-arch", "tech-arch",
     "process-value-chain", "scenario-map", "org-structure",
-    "gantt", "kpi-system", "implementation-phase", "ecosystem",
-    "table", "chart", "other"
+    "gantt", "kpi-system", "implementation-phase", "ecosystem", "other"
 ]
 
 CHART_TYPE_KEYWORDS = {
@@ -487,8 +484,6 @@ CHART_TYPE_KEYWORDS = {
     "value-tree": ["价值树", "value tree", "分解", "拆解", "wbs"],
     "scenario-map": ["场景", "scenario", "用例", "use case"],
     "ecosystem": ["生态", "ecosystem", "联盟", "合作"],
-    "table": ["表格", "table", "明细", "清单", "列表", "对照表", "一览表", "统计表"],
-    "chart": ["图表", "chart", "柱状图", "折线图", "饼图", "bar chart", "line chart", "pie chart", "趋势图", "数据图"],
 }
 
 
@@ -496,20 +491,7 @@ def classify_chart_type(slide, content_shapes: list, slide_width: int, slide_hei
     """基于文本关键词和视觉模式判断图形类型"""
     all_text = extract_text(slide).lower()
 
-    # ── shape 类型直接检测（最可靠） ──
-    has_table = any(hasattr(s, "table") for s in content_shapes)
-    has_chart = any(hasattr(s, "has_chart") and s.has_chart for s in content_shapes)
-    if has_table and has_chart:
-        # 同时有表格和图表时，看哪个面积更大
-        table_area = sum(s.width * s.height for s in content_shapes if hasattr(s, "table"))
-        chart_area = sum(s.width * s.height for s in content_shapes if hasattr(s, "has_chart") and s.has_chart)
-        return "table" if table_area >= chart_area else "chart"
-    if has_table:
-        return "table"
-    if has_chart:
-        return "chart"
-
-    # ── 关键词匹配 ──
+    # ── 关键词匹配（优先） ──
     for tag_id, keywords in CHART_TYPE_KEYWORDS.items():
         for kw in keywords:
             if kw.lower() in all_text:
@@ -727,7 +709,160 @@ def classify_slide(pptx_path: str, slide_index: int, slide_width: int, slide_hei
     }
 
 
-def run(input_path: str, output_dir: str = None, name_prefix: str = ""):
+# ─────────────────────────────────────────────────────────
+# 缩略图导出（与 officeComPlugin 兼容）
+# ─────────────────────────────────────────────────────────
+
+THUMB_WIDTH = 1280
+THUMB_HEIGHT = 720
+
+
+def export_thumbnail_com(pptx_path: str, output_path: str,
+                         width: int = THUMB_WIDTH, height: int = THUMB_HEIGHT) -> bool:
+    """使用 PowerPoint COM 导出单页缩略图（与 officeComPlugin 方式一致）"""
+    try:
+        import win32com.client
+        app = win32com.client.Dispatch("PowerPoint.Application")
+        app.Visible = True
+        pres = app.Presentations.Open(
+            str(Path(pptx_path).resolve()),
+            ReadOnly=True, WithWindow=False
+        )
+        slide = pres.Slides(1)
+        slide.Export(str(Path(output_path).resolve()), "PNG", width, height)
+        pres.Close()
+        # 不 quit，因为可能后续还要用
+        return True
+    except Exception as e:
+        print(f"    ⚠ COM 导出失败: {e}")
+        return False
+
+
+def export_thumbnail_libreoffice(pptx_path: str, output_dir: str) -> bool:
+    """使用 LibreOffice headless 导出缩略图"""
+    import subprocess
+    try:
+        result = subprocess.run(
+            ["soffice", "--headless", "--convert-to", "png",
+             "--outdir", output_dir, pptx_path],
+            capture_output=True, timeout=30
+        )
+        return result.returncode == 0
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return False
+
+
+def export_thumbnail_placeholder(pptx_path: str, output_path: str,
+                                  slide_index: int = 0) -> bool:
+    """降级方案：生成带文字信息的占位图"""
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+        img = Image.new("RGB", (THUMB_WIDTH, THUMB_HEIGHT), "#F5F5F5")
+        draw = ImageDraw.Draw(img)
+        # 尝试加载中文字体
+        try:
+            font = ImageFont.truetype("msyh.ttc", 36)
+            font_small = ImageFont.truetype("msyh.ttc", 20)
+        except OSError:
+            font = ImageFont.load_default()
+            font_small = font
+        # 绘制标题
+        name = Path(pptx_path).stem
+        draw.text((60, 80), f"📄 {name}", fill="#333333", font=font)
+        draw.text((60, 150), f"Slide {slide_index + 1}", fill="#666666", font=font_small)
+        # 绘制边框
+        draw.rectangle([(20, 20), (THUMB_WIDTH - 20, THUMB_HEIGHT - 20)],
+                       outline="#CCCCCC", width=2)
+        img.save(output_path, "PNG")
+        return True
+    except ImportError:
+        # 没有 Pillow，创建最小的空 PNG
+        _write_minimal_png(output_path, THUMB_WIDTH, THUMB_HEIGHT)
+        return True
+
+
+def _write_minimal_png(path: str, width: int, height: int):
+    """写一个最小的有效 PNG 文件"""
+    import struct
+    import zlib
+
+    def chunk(chunk_type, data):
+        c = chunk_type + data
+        return struct.pack(">I", len(data)) + c + struct.pack(">I", zlib.crc32(c) & 0xFFFFFFFF)
+
+    sig = b"\x89PNG\r\n\x1a\n"
+    ihdr = chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0))
+    raw = b""
+    for _ in range(height):
+        raw += b"\x00" + b"\xF5\xF5\xF5" * width
+    idat = chunk(b"IDAT", zlib.compress(raw))
+    iend = chunk(b"IEND", b"")
+    with open(path, "wb") as f:
+        f.write(sig + ihdr + idat + iend)
+
+
+def export_thumbnails(split_results: list, output_dir: str) -> dict:
+    """
+    为拆分后的每个 PPTX 导出 PNG 缩略图。
+    使用单个 COM 实例批量处理，避免重复创建/销毁。
+    返回 {slide_index: thumbnail_path}
+    """
+    thumb_map = {}
+
+    # 检测 COM 可用性
+    has_com = False
+    app = None
+    try:
+        import win32com.client
+        app = win32com.client.Dispatch("PowerPoint.Application")
+        app.Visible = True
+        has_com = True
+    except Exception:
+        has_com = False
+
+    if has_com and app:
+        try:
+            for entry in split_results:
+                idx = entry["slide_index"]
+                pptx_file = entry["path"]
+                thumb_name = Path(entry["file"]).stem + ".png"
+                thumb_path = os.path.join(output_dir, thumb_name)
+
+                try:
+                    pres = app.Presentations.Open(
+                        str(Path(pptx_file).resolve()),
+                        ReadOnly=True, WithWindow=False
+                    )
+                    pres.Slides(1).Export(
+                        str(Path(thumb_path).resolve()), "PNG",
+                        THUMB_WIDTH, THUMB_HEIGHT
+                    )
+                    pres.Close()
+                    print(f"  ✅ 缩略图: slide {idx} → {thumb_name}")
+                except Exception as e:
+                    print(f"    ⚠ slide {idx} COM 失败，降级: {e}")
+                    export_thumbnail_placeholder(pptx_file, thumb_path, 0)
+
+                thumb_map[idx] = thumb_path
+        finally:
+            try:
+                app.Quit()
+            except Exception:
+                pass
+    else:
+        # 无 COM，全部降级
+        for entry in split_results:
+            idx = entry["slide_index"]
+            pptx_file = entry["path"]
+            thumb_name = Path(entry["file"]).stem + ".png"
+            thumb_path = os.path.join(output_dir, thumb_name)
+            export_thumbnail_placeholder(pptx_file, thumb_path, 0)
+            thumb_map[idx] = thumb_path
+
+    return thumb_map
+
+
+def run(input_path: str, output_dir: str = None, name_prefix: str = "", no_thumb: bool = False):
     """主入口：拆页 + 分类 + 生成清单"""
     input_path = str(Path(input_path).resolve())
 
@@ -775,14 +910,11 @@ def run(input_path: str, output_dir: str = None, name_prefix: str = ""):
 
         tags = classify_slide(pptx_file, 0, slide_width, slide_height)
 
-        thumb_name = Path(entry["file"]).stem + ".png"
         manifest_entry = {
             "slide_index": idx,
             "file_name": entry["file"],
             "file_path": entry["path"],
-            "thumbnail": os.path.join(output_dir, "thumbnails", thumb_name),
             "tags": tags,
-            "confidence": None,  # AI 校验后填充
         }
         manifest_entries.append(manifest_entry)
 
@@ -794,8 +926,24 @@ def run(input_path: str, output_dir: str = None, name_prefix: str = ""):
 
     print()
 
-    # ── Step 3: 生成清单 ──
-    print("━━━ Step 3: 生成模板清单 ━━━")
+    # ── Step 3: 导出缩略图 ──
+    thumb_map = {}
+    if not no_thumb:
+        print("━━━ Step 3: 导出缩略图 ━━━")
+        thumb_map = export_thumbnails(split_results, output_dir)
+        for idx, thumb_path in thumb_map.items():
+            print(f"  ✅ 缩略图: slide {idx} → {Path(thumb_path).name}")
+        print()
+    else:
+        print("━━━ Step 3: 跳过缩略图导出 ━━━\n")
+
+    # ── Step 4: 生成清单 ──
+    print("━━━ Step 4: 生成模板清单 ━━━")
+    for entry in manifest_entries:
+        idx = entry["slide_index"]
+        if idx in thumb_map:
+            entry["thumbnail_path"] = thumb_map[idx]
+
     manifest = {
         "meta": {
             "source": os.path.basename(input_path),
@@ -846,9 +994,11 @@ def main():
                         help=f"输出目录 (默认: {DEFAULT_OUTPUT_DIR}/<文件名>/)")
     parser.add_argument("--name", "-n", default="",
                         help="输出文件名前缀 (默认: 使用输入文件名)")
+    parser.add_argument("--no-thumbnail", action="store_true",
+                        help="跳过缩略图导出")
 
     args = parser.parse_args()
-    run(args.input, args.output_dir, args.name)
+    run(args.input, args.output_dir, args.name, no_thumb=args.no_thumbnail)
 
 
 if __name__ == "__main__":
