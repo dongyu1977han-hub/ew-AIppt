@@ -27,7 +27,6 @@ import os
 import re
 import sys
 from collections import Counter
-from copy import deepcopy
 from pathlib import Path
 
 # Windows 控制台 UTF-8 输出
@@ -620,45 +619,97 @@ def _detect_phases(bboxes, sw: int, text: str) -> bool:
 # PPT 拆页
 # ─────────────────────────────────────────────────────────
 
-def split_pptx(input_path: str, output_dir: str, name_prefix: str = "") -> list:
-    """
-    将多页 PPTX 拆分为单页 PPTX 文件。
+def _split_pptx_com(input_path: str, output_dir: str, name_prefix: str) -> list:
+    """使用 PowerPoint COM 拆页（推荐，文件小、保真度高）"""
+    import time
+    import subprocess
+    import win32com.client
 
-    返回: [{"file": "slide_001.pptx", "path": "/full/path/..."}, ...]
-    """
+    # 先清理残留的 PowerPoint 进程
+    subprocess.run(["taskkill", "/F", "/IM", "POWERPNT.EXE"],
+                   capture_output=True, creationflags=0x08000000)  # CREATE_NO_WINDOW
+    time.sleep(1)
+
+    app = win32com.client.Dispatch("PowerPoint.Application")
+    app.Visible = True
+    try:
+        abs_input = str(Path(input_path).resolve())
+        pres = app.Presentations.Open(abs_input, ReadOnly=True, WithWindow=False)
+        n_slides = pres.Slides.Count
+
+        results = []
+        for i in range(1, n_slides + 1):
+            pres.Slides(i).Copy()
+            time.sleep(0.2)
+
+            new_pres = app.Presentations.Add()
+            new_pres.Slides.Paste()
+            time.sleep(0.2)
+
+            filename = f"{name_prefix}_slide_{i:03d}.pptx"
+            filepath = str(Path(output_dir, filename).resolve())
+            new_pres.SaveAs(filepath)
+
+            # 保存后标记为已保存，避免 Close 时弹保存对话框
+            new_pres.Saved = True
+            try:
+                new_pres.Close()
+            except Exception:
+                pass  # 忽略 event handler 错误
+
+            results.append({
+                "slide_index": i,
+                "file": filename,
+                "path": filepath,
+            })
+            print(f"  ✅ 拆分: slide {i}/{n_slides} → {filename}")
+
+        pres.Close()
+        return results
+    finally:
+        try:
+            app.Quit()
+        except Exception:
+            pass
+        # 再次清理残留进程
+        subprocess.run(["taskkill", "/F", "/IM", "POWERPNT.EXE"],
+                       capture_output=True, creationflags=0x08000000)
+
+
+def _split_pptx_pptx(input_path: str, output_dir: str, name_prefix: str) -> list:
+    """使用 python-pptx 拆页（降级方案，保留所有 master/layout）"""
     prs = Presentation(input_path)
-    slide_width = prs.slide_width
-    slide_height = prs.slide_height
     n_slides = len(prs.slides)
 
-    if n_slides == 0:
-        print("⚠ 输入文件没有幻灯片页")
-        return []
-
-    os.makedirs(output_dir, exist_ok=True)
-
-    if not name_prefix:
-        name_prefix = Path(input_path).stem
-
     results = []
-    for i, slide in enumerate(prs.slides):
-        # 创建新的演示文稿
-        new_prs = Presentation()
-        new_prs.slide_width = slide_width
-        new_prs.slide_height = slide_height
+    for i in range(n_slides):
+        prs = Presentation(input_path)
+        n = len(prs.slides)
 
-        # 复制版式（如果可能）
-        slide_layout = new_prs.slide_layouts[6]  # 空白版式
-        new_slide = new_prs.slides.add_slide(slide_layout)
+        # 删除目标页之外的所有页
+        for j in range(n - 1, i, -1):
+            rId = prs.slides._sldIdLst[j].get(
+                '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id')
+            if rId is None:
+                rId = prs.slides._sldIdLst[j].attrib.get(
+                    '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id')
+            if rId is not None:
+                prs.part.drop_rel(rId)
+            prs.slides._sldIdLst.remove(prs.slides._sldIdLst[j])
 
-        # 复制所有形状
-        for shape in slide.shapes:
-            _copy_shape(shape, new_slide, slide_width, slide_height)
+        for j in range(i - 1, -1, -1):
+            rId = prs.slides._sldIdLst[0].get(
+                '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id')
+            if rId is None:
+                rId = prs.slides._sldIdLst[0].attrib.get(
+                    '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id')
+            if rId is not None:
+                prs.part.drop_rel(rId)
+            prs.slides._sldIdLst.remove(prs.slides._sldIdLst[0])
 
-        # 保存
         filename = f"{name_prefix}_slide_{i + 1:03d}.pptx"
         filepath = os.path.join(output_dir, filename)
-        new_prs.save(filepath)
+        prs.save(filepath)
 
         results.append({
             "slide_index": i + 1,
@@ -670,16 +721,31 @@ def split_pptx(input_path: str, output_dir: str, name_prefix: str = "") -> list:
     return results
 
 
-def _copy_shape(source_shape, target_slide, slide_width, slide_height):
-    """将源形状复制到目标幻灯片"""
+def split_pptx(input_path: str, output_dir: str, name_prefix: str = "") -> list:
+    """
+    将多页 PPTX 拆分为单页 PPTX 文件。
+    优先使用 PowerPoint COM（文件小、保真度高），
+    无 COM 时降级为 python-pptx（保留所有 master/layout，文件较大）。
+
+    返回: [{"file": "slide_001.pptx", "path": "/full/path/..."}, ...]
+    """
+    prs_check = Presentation(input_path)
+    n_slides = len(prs_check.slides)
+    if n_slides == 0:
+        print("⚠ 输入文件没有幻灯片页")
+        return []
+
+    os.makedirs(output_dir, exist_ok=True)
+    if not name_prefix:
+        name_prefix = Path(input_path).stem
+
+    # 尝试 COM 方式
     try:
-        # 获取形状的 XML 元素并深拷贝
-        from lxml import etree
-        sp_xml = deepcopy(source_shape._element)
-        target_slide.shapes._spTree.append(sp_xml)
-    except Exception:
-        # 降级：只复制基本属性
-        pass
+        import win32com.client  # noqa: F401
+        return _split_pptx_com(input_path, output_dir, name_prefix)
+    except Exception as e:
+        print(f"  ⚠ COM 拆分不可用 ({e})，降级为 python-pptx")
+        return _split_pptx_pptx(input_path, output_dir, name_prefix)
 
 
 # ─────────────────────────────────────────────────────────
