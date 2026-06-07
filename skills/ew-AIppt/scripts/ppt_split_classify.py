@@ -467,22 +467,100 @@ CHART_TYPE_TAG_ORDER = [
     "gantt", "kpi-system", "implementation-phase", "ecosystem", "other"
 ]
 
+# ─────────────────────────────────────────────────────────
+# 中文标签名映射
+# ─────────────────────────────────────────────────────────
+
+TAG_NAMES_CN = {
+    "logic": {
+        "parallel": "并列", "sequential": "递进", "star": "星型",
+        "contrast": "对比", "hierarchy": "层级", "matrix": "矩阵",
+        "cycle": "循环", "pyramid": "棱锥", "other": "其它",
+    },
+    "domain": {
+        "strategy": "战略", "current-state": "现状", "architecture": "架构",
+        "technology": "技术", "organization": "组织", "operation": "运营",
+        "other": "其它",
+    },
+    "count": {
+        "count-1": "一项", "count-2": "两项", "count-3": "三项",
+        "count-4": "四项", "count-5": "五项", "count-6": "六项",
+        "count-7-plus": "七项及以上",
+    },
+    "chart-type": {
+        "timeline": "时间轴", "house-chart": "屋型图", "logic-steps": "逻辑步骤",
+        "value-tree": "价值树", "business-arch": "业务架构", "app-arch": "应用架构",
+        "data-arch": "数据架构", "tech-arch": "技术架构",
+        "process-value-chain": "流程价值链", "scenario-map": "场景图",
+        "org-structure": "组织架构", "gantt": "甘特图", "kpi-system": "指标体系",
+        "implementation-phase": "实施阶段", "ecosystem": "生态图", "other": "其它",
+    },
+}
+
+
 CHART_TYPE_KEYWORDS = {
-    "timeline": ["时间", "timeline", "里程碑", "milestone", "历程", "沿革", "年表"],
-    "gantt": ["甘特", "gantt", "进度", "排期", "schedule", "wbs"],
-    "org-structure": ["组织", "org", "部门", "department", "汇报", "架构图"],
-    "kpi-system": ["指标", "kpi", "绩效", "metric", "dashboard", "仪表盘", "考核"],
-    "implementation-phase": ["实施", "落地", "阶段", "phase", "步骤一", "步骤二"],
-    "business-arch": ["业务架构", "business architecture"],
-    "app-arch": ["应用架构", "application architecture", "系统架构"],
-    "data-arch": ["数据架构", "data architecture", "数据模型"],
-    "tech-arch": ["技术架构", "technical architecture", "技术栈", "tech stack"],
-    "process-value-chain": ["价值链", "value chain", "流程", "process chain"],
-    "house-chart": ["屋型", "house", "质量屋", "qfd"],
-    "logic-steps": ["步骤", "step", "方法", "路径", "路径图"],
-    "value-tree": ["价值树", "value tree", "分解", "拆解", "wbs"],
-    "scenario-map": ["场景", "scenario", "用例", "use case"],
-    "ecosystem": ["生态", "ecosystem", "联盟", "合作"],
+    "timeline": [
+        "时间轴", "时间线", "timeline", "里程碑", "milestone", "历程", "沿革", "年表",
+        "发展史", "历史沿革", "演进", "evolution", "关键节点", "重大事件",
+    ],
+    "gantt": [
+        "甘特", "gantt", "进度", "排期", "schedule", "wbs", "工作分解",
+        "里程碑计划", "项目计划", "时间节点", "工期",
+    ],
+    "org-structure": [
+        "组织架构", "组织结构", "组织", "org", "部门", "department", "汇报",
+        "架构图", "人事", "团队架构", "治理结构", "委员会",
+    ],
+    "kpi-system": [
+        "指标体系", "指标", "kpi", "okr", "绩效", "metric", "dashboard",
+        "仪表盘", "考核", "关键指标", "衡量", "目标值", "达成率",
+    ],
+    "implementation-phase": [
+        "实施", "落地", "阶段", "phase", "步骤一", "步骤二", "路线图",
+        "推进计划", "分步", "分期", "里程碑", "转型路径",
+    ],
+    "business-arch": [
+        "业务架构", "business architecture", "业务蓝图", "业务框架",
+        "业务能力", "业务域", "业务功能",
+    ],
+    "app-arch": [
+        "应用架构", "application architecture", "系统架构", "应用蓝图",
+        "应用全景", "系统全景",
+    ],
+    "data-arch": [
+        "数据架构", "data architecture", "数据模型", "数据资产",
+        "数据标准", "数据字典", "数据流",
+    ],
+    "tech-arch": [
+        "技术架构", "technical architecture", "技术栈", "tech stack",
+        "技术蓝图", "技术平台", "基础设施",
+    ],
+    "process-value-chain": [
+        "价值链", "value chain", "流程", "process chain", "端到端",
+        "全链路", "业务流程", "流程图", "泳道",
+    ],
+    "house-chart": [
+        "屋型图", "屋型", "house", "质量屋", "qfd", "框架",
+        "数字化框架", "转型框架", "总体框架", "整体框架",
+        "全景图", "顶层设计", "目标体系", "能力框架", "能力体系",
+    ],
+    "logic-steps": [
+        "步骤", "step", "方法", "路径", "路径图", "方法论",
+        "逻辑", "框架", "分析框架", "思维框架",
+    ],
+    "value-tree": [
+        "价值树", "value tree", "分解", "拆解", "wbs",
+        "驱动", "树状", "树形", "层级分解", "目标分解",
+        "战略分解", "KPI分解", "指标分解",
+    ],
+    "scenario-map": [
+        "场景", "scenario", "用例", "use case", "用户旅程",
+        "客户旅程", "体验地图", "服务蓝图",
+    ],
+    "ecosystem": [
+        "生态", "ecosystem", "联盟", "合作", "生态圈", "产业生态",
+        "平台生态", "合作伙伴",
+    ],
 }
 
 
@@ -490,8 +568,18 @@ def classify_chart_type(slide, content_shapes: list, slide_width: int, slide_hei
     """基于文本关键词和视觉模式判断图形类型"""
     all_text = extract_text(slide).lower()
 
-    # ── 关键词匹配（优先） ──
-    for tag_id, keywords in CHART_TYPE_KEYWORDS.items():
+    # ── 关键词匹配（按优先级排序，更具体的先匹配） ──
+    # 匹配顺序：精确 > 通用，避免"框架"等泛词误命中
+    keyword_priority = [
+        "house-chart", "value-tree",           # 最具体，优先
+        "timeline", "gantt", "kpi-system",
+        "org-structure", "process-value-chain",
+        "business-arch", "app-arch", "data-arch", "tech-arch",
+        "implementation-phase", "logic-steps",
+        "scenario-map", "ecosystem",
+    ]
+    for tag_id in keyword_priority:
+        keywords = CHART_TYPE_KEYWORDS.get(tag_id, [])
         for kw in keywords:
             if kw.lower() in all_text:
                 return tag_id
@@ -502,6 +590,14 @@ def classify_chart_type(slide, content_shapes: list, slide_width: int, slide_hei
         return "other"
 
     bboxes = [get_shape_bbox(s) for s in content_shapes]
+
+    # house-chart：屋顶+立柱+底座的屋型结构
+    if _detect_house_chart(content_shapes, bboxes, slide_width, slide_height):
+        return "house-chart"
+
+    # value-tree：根节点+分支的树状分解
+    if _detect_value_tree(content_shapes, bboxes, slide_width, slide_height):
+        return "value-tree"
 
     # timeline：水平排列 + 箭头/连接线
     if _detect_timeline(content_shapes, bboxes, all_text):
@@ -528,6 +624,82 @@ def classify_chart_type(slide, content_shapes: list, slide_width: int, slide_hei
         return "implementation-phase"
 
     return "other"
+
+
+def _detect_house_chart(shapes, bboxes, sw: int, sh: int) -> bool:
+    """检测屋型图：顶部有宽横条（屋顶），中间有立柱，底部有底座"""
+    n = len(bboxes)
+    if n < 4:
+        return False
+
+    # 按 y 坐标分层
+    sorted_bboxes = sorted(bboxes, key=lambda b: b[5])
+    layer_threshold = sh * 0.06
+    layers = []
+    current_layer = [sorted_bboxes[0]]
+    for bb in sorted_bboxes[1:]:
+        if bb[5] - current_layer[-1][5] < layer_threshold:
+            current_layer.append(bb)
+        else:
+            layers.append(current_layer)
+            current_layer = [bb]
+    layers.append(current_layer)
+
+    if len(layers) < 3:
+        return False
+
+    # 屋顶：最上层有 1-2 个宽形状（宽度 > 页宽 40%）
+    top_layer = layers[0]
+    has_roof = any(b[2] > sw * 0.4 for b in top_layer)
+
+    # 底座：最下层有宽形状
+    bottom_layer = layers[-1]
+    has_base = any(b[2] > sw * 0.3 for b in bottom_layer)
+
+    # 中间层有多个立柱状形状（高度 > 宽度，或数量 >= 3）
+    middle_layers = layers[1:-1]
+    middle_shapes = [b for layer in middle_layers for b in layer]
+    pillar_count = len(middle_shapes)
+
+    return has_roof and has_base and pillar_count >= 2
+
+
+def _detect_value_tree(shapes, bboxes, sw: int, sh: int) -> bool:
+    """检测价值树：根节点在顶部/左侧，向下/右分支展开"""
+    n = len(bboxes)
+    if n < 5:
+        return False
+
+    # 检查是否有明显的层级树状分布
+    # 按 y 分层，检查每层形状数量是否递增（树状展开）
+    sorted_bboxes = sorted(bboxes, key=lambda b: b[5])
+    layer_threshold = sh * 0.08
+    layers = []
+    current_layer = [sorted_bboxes[0]]
+    for bb in sorted_bboxes[1:]:
+        if bb[5] - current_layer[-1][5] < layer_threshold:
+            current_layer.append(bb)
+        else:
+            layers.append(current_layer)
+            current_layer = [bb]
+    layers.append(current_layer)
+
+    if len(layers) < 3:
+        return False
+
+    counts = [len(l) for l in layers]
+    # 树状：第一层少，后面递增（第一层 1-2 个，最后一层 >= 3 个）
+    if counts[0] <= 2 and counts[-1] >= 3 and counts[-1] > counts[0]:
+        # 检查是否有连接线
+        has_connectors = any(hasattr(s, "connector") and s.connector for s in shapes)
+        # 或者文本中有"驱动"、"分解"等关键词
+        all_text = " ".join(extract_text(s) for s in shapes if s.has_text_frame).lower()
+        tree_keywords = ["驱动", "分解", "价值", "树", "tree", "目标", "kpi"]
+        has_keyword = any(kw in all_text for kw in tree_keywords)
+        if has_connectors or has_keyword:
+            return True
+
+    return False
 
 
 def _detect_timeline(shapes, bboxes, text: str) -> bool:
@@ -751,6 +923,11 @@ def split_pptx(input_path: str, output_dir: str, name_prefix: str = "") -> list:
 # ─────────────────────────────────────────────────────────
 # 主流程
 # ─────────────────────────────────────────────────────────
+
+def tags_to_chinese(tags: dict) -> dict:
+    """将英文标签值转为中文显示"""
+    return {dim: TAG_NAMES_CN[dim].get(val, val) for dim, val in tags.items()}
+
 
 def classify_slide(pptx_path: str, slide_index: int, slide_width: int, slide_height: int) -> dict:
     """对单个 PPTX 文件的第 slide_index 页进行四维分类"""
@@ -976,19 +1153,21 @@ def run(input_path: str, output_dir: str = None, name_prefix: str = "", no_thumb
 
         tags = classify_slide(pptx_file, 0, slide_width, slide_height)
 
+        tags_cn = tags_to_chinese(tags)
         manifest_entry = {
             "slide_index": idx,
             "file_name": entry["file"],
             "file_path": entry["path"],
             "tags": tags,
+            "tags_cn": tags_cn,
         }
         manifest_entries.append(manifest_entry)
 
         print(f"  slide {idx:3d}: "
-              f"logic={tags['logic']:12s} "
-              f"domain={tags['domain']:14s} "
-              f"count={tags['count']:10s} "
-              f"chart-type={tags['chart-type']}")
+              f"逻辑={tags_cn['logic']:6s} "
+              f"领域={tags_cn['domain']:6s} "
+              f"数量={tags_cn['count']:6s} "
+              f"图形={tags_cn['chart-type']}")
 
     print()
 
@@ -1036,7 +1215,7 @@ def run(input_path: str, output_dir: str = None, name_prefix: str = "", no_thumb
         ("logic", "逻辑拓扑"), ("domain", "内容领域"),
         ("count", "数量规模"), ("chart-type", "图形类型")
     ]:
-        counter = Counter(e["tags"][dim_id] for e in manifest_entries)
+        counter = Counter(e["tags_cn"][dim_id] for e in manifest_entries)
         print(f"  {dim_name}:")
         for tag, cnt in counter.most_common():
             print(f"    {tag}: {cnt}")

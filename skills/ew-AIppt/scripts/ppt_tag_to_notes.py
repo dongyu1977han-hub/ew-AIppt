@@ -27,7 +27,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 from ppt_split_classify import (
     get_content_shapes, classify_logic, classify_domain,
-    classify_count, classify_chart_type,
+    classify_count, classify_chart_type, tags_to_chinese,
 )
 
 TAG_NOTES_PREFIX = "[EW-TTS Tags]"
@@ -35,13 +35,14 @@ TAG_NOTES_MARKER = "━━━ 四维标签分类 (EW-TTS v2.0) ━━━"
 
 
 def format_tags_for_notes(tags: dict) -> str:
-    """将四维标签格式化为备注文本"""
+    """将四维标签格式化为备注文本（中文）"""
+    cn = tags_to_chinese(tags)
     lines = [
         TAG_NOTES_MARKER,
-        f"  逻辑拓扑: {tags['logic']}",
-        f"  内容领域: {tags['domain']}",
-        f"  数量规模: {tags['count']}",
-        f"  图形类型: {tags['chart-type']}",
+        f"  逻辑拓扑: {cn['logic']}",
+        f"  内容领域: {cn['domain']}",
+        f"  数量规模: {cn['count']}",
+        f"  图形类型: {cn['chart-type']}",
         TAG_NOTES_MARKER,
     ]
     return "\n".join(lines)
